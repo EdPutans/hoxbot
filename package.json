@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "setup": "npx ts-node registerCommands.ts",
-    "start": "npx nodemon index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npx node build/index.js",
+    "start2": "npx ts-node index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",

@@ -9,7 +9,7 @@ exports.getIsSupportThread = getIsSupportThread;
 const createEphemeral = (interaction, content) => {
     if (!interaction.isCommand())
         return;
-    interaction.reply({
+    return interaction.reply({
         content,
         ephemeral: true
     });

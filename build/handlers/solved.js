@@ -15,13 +15,17 @@ const helpers_1 = require("../utils/helpers");
 const handleSolved = (interaction) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     if (!((_a = interaction.channel) === null || _a === void 0 ? void 0 : _a.isThread()))
-        return;
+        return yield (0, helpers_1.createEphemeral)(interaction, `You're not inside a thread!`);
     if (!interaction.channel.parentId)
-        return;
-    if (!(0, helpers_1.getIsSupportThread)(interaction.channel.parentId))
-        return;
+        return yield (0, helpers_1.createEphemeral)(interaction, `No parent ID? what?`);
     if (interaction.channel.name.startsWith(consts_1.solvedThreadPrefix))
-        return (0, helpers_1.createEphemeral)(interaction, 'Yo, the channel is already "solved"!');
+        return yield (0, helpers_1.createEphemeral)(interaction, `Umm.. the channel is already solved?`);
+    if (!(0, helpers_1.getIsSupportThread)(interaction.channel.parentId))
+        return yield (0, helpers_1.createEphemeral)(interaction, `You're not inside a support channels thread!`);
+    if (interaction.channel.name.startsWith(consts_1.solvedThreadPrefix))
+        return yield (0, helpers_1.createEphemeral)(interaction, 'Yo, the channel is already "solved"!');
     yield interaction.channel.setName(consts_1.solvedThreadPrefix + interaction.channel.name);
+    yield (0, helpers_1.createEphemeral)(interaction, 'Marked as "solved"!');
+    return;
 });
 exports.handleSolved = handleSolved;

@@ -7,7 +7,7 @@ export const getIsSupportThread = (channelId: string) => {
 
 export const createEphemeral = (interaction: Interaction, content: string) => {
   if (!interaction.isCommand()) return;
-  interaction.reply({
+  return interaction.reply({
     content,
     ephemeral: true
   })

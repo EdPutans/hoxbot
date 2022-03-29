@@ -1,6 +1,5 @@
 import { envVariables } from "./getEnvVariables";
 import { ZoomLinks } from "./types";
-
 export const solvedThreadPrefix = '💚'
 
 export const supportChannelIds = [

@@ -15,17 +15,17 @@ const helpers_1 = require("../utils/helpers");
 const defaultMessage = " The session is starting!";
 const handleZoom = (interaction) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c;
-    const userId = `${interaction.user.id}`;
-    const defaultZoomLink = (_a = consts_1.zoomLinks[userId]) === null || _a === void 0 ? void 0 : _a.link;
-    console.log(userId, defaultZoomLink);
     if (!interaction.isCommand())
         return;
+    const userId = `${interaction.user.id}`;
+    const defaultZoomLink = (_a = consts_1.zoomLinks[userId]) === null || _a === void 0 ? void 0 : _a.link;
     if (!defaultZoomLink)
         return (0, helpers_1.createEphemeral)(interaction, "You don't have access to this feature!");
     const zoomLink = ((_b = interaction.options.get("zoom-link")) === null || _b === void 0 ? void 0 : _b.value) || defaultZoomLink;
     const message = ((_c = interaction.options.get("message")) === null || _c === void 0 ? void 0 : _c.value) || defaultMessage;
     const newMessage = `@everyone ${message} ${zoomLink}`;
     yield interaction.reply(newMessage);
+    return;
 });
 exports.handleZoom = handleZoom;
 // // if its not an admin - can't use it

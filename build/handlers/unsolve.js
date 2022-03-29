@@ -10,20 +10,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleUnsolve = void 0;
+const consts_1 = require("../utils/consts");
 const helpers_1 = require("../utils/helpers");
 const handleUnsolve = (interaction) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     if (!((_a = interaction.channel) === null || _a === void 0 ? void 0 : _a.isThread()))
-        return;
+        return (0, helpers_1.createEphemeral)(interaction, `You're not inside a support thread!`);
     if (!interaction.channel.parentId)
-        return;
+        return (0, helpers_1.createEphemeral)(interaction, `Something went wrong - no parent_id`);
     if (!(0, helpers_1.getIsSupportThread)(interaction.channel.parentId))
-        return;
-    if (!interaction.channel.archived)
-        return (0, helpers_1.createEphemeral)(interaction, 'Yo, the channel is already "solved"!');
-    if (!interaction.channel.name.startsWith('💚'))
+        return (0, helpers_1.createEphemeral)(interaction, `You're not inside a support thread!`);
+    if (!interaction.channel.name.startsWith(consts_1.solvedThreadPrefix))
         return (0, helpers_1.createEphemeral)(interaction, `Umm.. the channel isn't solved? :what:`);
-    yield interaction.channel.setName('💚' + interaction.channel.name);
-    yield interaction.channel.setArchived(false, 'Unsolve command by ' + interaction.user.username);
+    const newName = interaction.channel.name.slice(consts_1.solvedThreadPrefix.length);
+    yield interaction.channel.setName(newName);
+    return;
 });
 exports.handleUnsolve = handleUnsolve;
