@@ -1,5 +1,5 @@
+import { envVariables } from "./getEnvVariables";
 import { ZoomLinks } from "./types";
-require('dotenv').config();
 
 export const solvedThreadPrefix = '💚'
 
@@ -10,11 +10,11 @@ export const supportChannelIds = [
 
 export const zoomLinks: ZoomLinks = {
   "815288587662000159": {
-    link: process.env.ED_ZOOM,
+    link: envVariables.EdZoom,
     name: "Ed"
   },
   "811540425835020309": {
-    link: process.env.NICO_ZOOM,
+    link: envVariables.NicoZoom,
     name: "Nico"
   }
 }
