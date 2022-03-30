@@ -33,3 +33,7 @@ client.on('messageCreate', async (message: Message) => {
 });
 
 client.login(envVariables.token);
+
+process.on("exit", () => {
+  console.log("CYA LOSERS!")
+})
