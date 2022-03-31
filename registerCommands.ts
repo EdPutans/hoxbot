@@ -2,11 +2,13 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import { envVariables } from './utils/getEnvVariables';
+import { HOXCommand } from './utils/types';
 
 const commands = [
-  new SlashCommandBuilder().setName('solved').setDescription('Marks thread as solved'),
-  new SlashCommandBuilder().setName('unsolve').setDescription('Marked as solved by accident? No worries Im here for ya'),
-  new SlashCommandBuilder().setName('zoom').addStringOption(option =>
+  new SlashCommandBuilder().setName(HOXCommand.solved).setDescription('Marks thread as solved'),
+  new SlashCommandBuilder().setName(HOXCommand.unsolve).setDescription('Marked as solved by accident? No worries Im here for ya'),
+  new SlashCommandBuilder().setName(HOXCommand.dangerous__clear_voice_channel).setDescription('Clear voice channel chat'),
+  new SlashCommandBuilder().setName(HOXCommand.zoom).addStringOption(option =>
     option.setName('zoom-link')
       .setDescription('Custom zoom link')
       .setRequired(false))
@@ -15,7 +17,8 @@ const commands = [
         .setDescription('Set a custom message')
         .setRequired(false))
     .setDescription('Post zoom link!'),
-  new SlashCommandBuilder().setName('event').addStringOption(option =>
+
+  new SlashCommandBuilder().setName(HOXCommand.event).addStringOption(option =>
     option.setName('when')
       .setDescription('when is the event taking place>')
       .setRequired(true))

@@ -7,4 +7,10 @@ export type ZoomLinks = {
   }
 }
 // slash commands supported by hoxbot:
-export type HoxCommand = 'solved' | 'unsolve' | 'zoom' | 'event';
+export enum HOXCommand {
+  solved = 'solved',
+  unsolve = 'unsolve',
+  zoom = 'zoom',
+  event = 'event',
+  dangerous__clear_voice_channel = 'dangerous__clear_voice_channel',
+}
