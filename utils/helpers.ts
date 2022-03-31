@@ -1,5 +1,5 @@
 import { Interaction } from "discord.js";
-import { supportChannelIds } from "./consts";
+import { supportChannelIds, zoomLinks } from "./consts";
 
 export const getIsSupportThread = (channelId: string) => {
   return supportChannelIds.includes(channelId);
@@ -11,4 +11,9 @@ export const createEphemeral = (interaction: Interaction, content: string) => {
     content,
     ephemeral: true
   })
+}
+
+export const getIsTeacher = (userId: string | number) => {
+  const userIdString = `${userId}`
+  return Object.keys(zoomLinks).includes(userIdString)
 }

@@ -6,3 +6,5 @@ export type ZoomLinks = {
     name: string;
   }
 }
+// slash commands supported by hoxbot:
+export type HoxCommand = 'solved' | 'unsolve' | 'zoom' | 'event';

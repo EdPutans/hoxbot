@@ -16,6 +16,19 @@ const commands = [
         .setDescription('Set a custom message')
         .setRequired(false))
     .setDescription('Post zoom link!'),
+  new SlashCommandBuilder().setName('event').addStringOption(option =>
+    option.setName('when')
+      .setDescription('when is the event taking place>')
+      .setRequired(true))
+    .addStringOption(option =>
+      option.setName('what')
+        .setDescription("What's going on?")
+        .setRequired(true))
+    .addStringOption(option =>
+      option.setName('where')
+        .setDescription("Where is the event happening (Zoom, channel, IRL etc)")
+        .setRequired(true))
+    .setDescription('Create a new event in this channel'),
 ]
   .map(command => command.toJSON());
 

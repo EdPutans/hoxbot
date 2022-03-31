@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "setup": "npx ts-node registerCommands.ts",
-    "start": "npx node build/index.js",
+    "start": "tsc && npx node build/index.js",
     "start-ts": "npx ts-node index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
