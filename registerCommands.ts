@@ -4,7 +4,6 @@ import { Routes } from 'discord-api-types/v9';
 import { envVariables } from './utils/getEnvVariables';
 
 const commands = [
-  new SlashCommandBuilder().setName('ping').setDescription('Replies with pong!'),
   new SlashCommandBuilder().setName('solved').setDescription('Marks thread as solved'),
   new SlashCommandBuilder().setName('unsolve').setDescription('Marked as solved by accident? No worries Im here for ya'),
   new SlashCommandBuilder().setName('zoom').addStringOption(option =>
