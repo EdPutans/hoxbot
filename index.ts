@@ -10,7 +10,16 @@ import client from "./utils/discordClient";
 import { envVariables } from "./utils/getEnvVariables";
 import { createEphemeral } from "./utils/helpers";
 import { HOXCommand } from "./utils/types";
+import express from 'express'
 
+const api = express();
+api.get('/', (req, res) => {
+  res.status(200).send("henlo!")
+})
+
+api.listen(3000, () => {
+  console.log('bla!')
+})
 
 client.once('ready', () => {
   console.log('Ready to go go go!');
@@ -45,6 +54,8 @@ client.on('messageCreate', async (message: Message) => {
 });
 
 client.login(envVariables.token);
+
+
 
 process.on("exit", () => {
   console.log("CYA LOSERS!")
