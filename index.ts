@@ -13,13 +13,14 @@ import { HOXCommand } from "./utils/types";
 import express from 'express'
 import { handleStandup } from "./handlers/handleStandup";
 
+
 const api = express();
 api.get('/', (req, res) => {
   res.status(200).send("henlo!")
 })
 
-api.listen(3000, () => {
-  console.log('bla!')
+api.listen(envVariables.port, () => {
+  console.log('using port', envVariables.port)
 })
 
 client.once('ready', () => {
