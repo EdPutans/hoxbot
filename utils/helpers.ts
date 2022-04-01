@@ -13,7 +13,17 @@ export const createEphemeral = (interaction: Interaction, content: string) => {
   })
 }
 
+// TODO: transform it to use interaction / message -> user -> roles instead
 export const getIsTeacher = (userId: string | number) => {
   const userIdString = `${userId}`
   return Object.keys(zoomLinks).includes(userIdString)
+}
+
+export const getIsStudent = (roleIds: string[]) => {
+  const studentRoleIds = [
+    '955781997857480764', // ed's server - Plebian role
+    '955781997857480764' // Hoxton - student role
+  ];
+
+  return !!roleIds.find(roleId => studentRoleIds.includes(`${roleId}`))
 }

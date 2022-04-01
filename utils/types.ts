@@ -12,5 +12,6 @@ export enum HOXCommand {
   unsolve = 'unsolve',
   zoom = 'zoom',
   event = 'event',
+  standup = 'standup',
   dangerous__clear_voice_channel = 'dangerous__clear_voice_channel',
 }

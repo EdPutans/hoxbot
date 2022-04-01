@@ -11,6 +11,7 @@ import { envVariables } from "./utils/getEnvVariables";
 import { createEphemeral } from "./utils/helpers";
 import { HOXCommand } from "./utils/types";
 import express from 'express'
+import { handleStandup } from "./handlers/handleStandup";
 
 const api = express();
 api.get('/', (req, res) => {
@@ -32,6 +33,8 @@ client.on('interactionCreate', async (interaction: Interaction) => {
   switch (interaction.commandName as HOXCommand) {
     case 'zoom':
       return await handleZoom(interaction);
+    case 'standup':
+      return await handleStandup(interaction);
     case 'solved':
       return await handleSolved(interaction);
     case 'unsolve':

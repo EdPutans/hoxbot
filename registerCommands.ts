@@ -6,6 +6,7 @@ import { HOXCommand } from './utils/types';
 
 const commands = [
   new SlashCommandBuilder().setName(HOXCommand.solved).setDescription('Marks thread as solved'),
+  new SlashCommandBuilder().setName(HOXCommand.standup).setDescription('Post a standup message'),
   new SlashCommandBuilder().setName(HOXCommand.unsolve).setDescription('Marked as solved by accident? No worries Im here for ya'),
   new SlashCommandBuilder().setName(HOXCommand.dangerous__clear_voice_channel).setDescription('Clear voice channel chat'),
   new SlashCommandBuilder().setName(HOXCommand.zoom).addStringOption(option =>

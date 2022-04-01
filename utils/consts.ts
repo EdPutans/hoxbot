@@ -2,6 +2,11 @@ import { envVariables } from "./getEnvVariables";
 import { ZoomLinks } from "./types";
 export const solvedThreadPrefix = '💚'
 
+export const classRoomIds = [
+  '866611696293117962', // hoxton => #classroom
+  '956513137996230677' // ed-> general 
+]
+
 export const supportChannelIds = [
   "955465593191018547", // ed's channel
   "895957476606898176"  // hoxton -> #support
