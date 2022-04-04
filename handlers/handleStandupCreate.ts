@@ -1,5 +1,7 @@
 import { GuildMember, Interaction, Message, Snowflake } from "discord.js";
 import { createEphemeral, getIsStudent, getIsTeacher } from "../utils/helpers";
+import { writeFileSync } from "fs";
+import { addActiveStandupThread } from "../utils/fs-write";
 
 export const handleStandupCreate = async (interaction: Interaction) => {
   if (!interaction.isCommand()) return await createEphemeral(interaction, `Not a command?`);
@@ -29,6 +31,8 @@ ${pingPeople.join('⏰ \n')}
   await msg.startThread({
     name: 'Daily standup time!!!!',
   })
+
+  addActiveStandupThread(msg.id)
 
   return;
 }
