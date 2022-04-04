@@ -11,7 +11,8 @@ import { envVariables } from "./utils/getEnvVariables";
 import { createEphemeral } from "./utils/helpers";
 import { HOXCommand } from "./utils/types";
 import express from 'express'
-import { handleStandup } from "./handlers/handleStandup";
+import { handleStandupCreate } from "./handlers/handleStandupCreate";
+// import { handleStanupReply } from "./handlers/handleStanupReply";
 
 
 const api = express();
@@ -35,7 +36,7 @@ client.on('interactionCreate', async (interaction: Interaction) => {
     case 'zoom':
       return await handleZoom(interaction);
     case 'standup':
-      return await handleStandup(interaction);
+      return await handleStandupCreate(interaction);
     case 'solved':
       return await handleSolved(interaction);
     case 'unsolve':
@@ -53,6 +54,7 @@ client.on('messageCreate', async (message: Message) => {
   if (message.author.id === envVariables.clientId) return; // dont reply to bot messages
   if (message.system) return;
 
+  // await handleStanupReply(message)
   await handleAutoSupportThread(message);
   await handleEasterEgg(message)
 });
