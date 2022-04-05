@@ -3,6 +3,13 @@ import { createEphemeral, getIsStudent, getIsTeacher } from "../utils/helpers";
 import { writeFileSync } from "fs";
 import { addActiveStandupThread } from "../utils/fs-write";
 
+const initialMessage = "Hey @everyone! Time for the daily!";
+const defaultThreadName = `Daily standup time!!!!`;
+
+// export const getUserMentionForDaily = (userId: string) => `<@${userId}>${splitMentions}`
+
+export const splitMentions = '⏰ \n'
+
 export const handleStandupCreate = async (interaction: Interaction) => {
   if (!interaction.isCommand()) return await createEphemeral(interaction, `Not a command?`);
   if (!interaction.channel) return await createEphemeral(interaction, `Not in a channel lol what`);
@@ -16,23 +23,23 @@ export const handleStandupCreate = async (interaction: Interaction) => {
     return getIsStudent(roleIds);
   })
 
-  const pingPeople: string[] = usersToPing.map(user => `<@${user.id}>`)
+  const pingPeople: string = usersToPing.map(user => `<@${user.id}>${splitMentions}`).join('');
 
-  const message = `Hey @everyone! Standup time!\n
+  const message =
+    `
   - How did yesterday go?
   - What's the plan for today?
   - Any ~~cock~~ blockers?
 
-${pingPeople.join('⏰ \n')}
-  `;
+Waiting for answers:
+${pingPeople}
+`;
 
-  const msg = await interaction.channel.send(message);
+  const msg = await interaction.channel.send(initialMessage);
+  const thread = await msg.startThread({ name: defaultThreadName });
 
-  await msg.startThread({
-    name: 'Daily standup time!!!!',
-  })
-
-  addActiveStandupThread(msg.id)
+  thread.send(message)
+  addActiveStandupThread(msg.id, usersToPing.map(u => u.id))
 
   return;
 }
