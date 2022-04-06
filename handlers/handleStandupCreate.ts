@@ -6,9 +6,8 @@ import { addActiveStandupThread } from "../utils/fs-write";
 const initialMessage = "Hey @everyone! Time for the daily!";
 const defaultThreadName = `Daily standup time!!!!`;
 
-// export const getUserMentionForDaily = (userId: string) => `<@${userId}>${splitMentions}`
-
-export const splitMentions = '⏰ \n'
+export const getUnrespondedUserName = (userId: string) => `<@${userId}>⏰`;
+export const getRespondedUserName = (userId: string) => `<@${userId}>✅`;
 
 export const handleStandupCreate = async (interaction: Interaction) => {
   if (!interaction.isCommand()) return await createEphemeral(interaction, `Not a command?`);
@@ -23,7 +22,7 @@ export const handleStandupCreate = async (interaction: Interaction) => {
     return getIsStudent(roleIds);
   })
 
-  const pingPeople: string = usersToPing.map(user => `<@${user.id}>${splitMentions}`).join('');
+  const pingPeople: string = usersToPing.map(user => getUnrespondedUserName(user.id) + '\n').join('');
 
   const message =
     `

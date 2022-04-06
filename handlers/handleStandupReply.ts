@@ -1,10 +1,9 @@
 import { Message } from "discord.js";
-import { off } from "process";
 import { classRoomIds } from "../utils/consts";
 import client from "../utils/discordClient";
-import { getDoesStudentNeedToReply, getActiveStandupThread, removeStudentFromActiveStandup } from "../utils/fs-write";
+import { getDoesStudentNeedToReply, removeStudentFromActiveStandup, removeThread } from "../utils/fs-write";
 import { envVariables } from "../utils/getEnvVariables";
-import { splitMentions } from "./handleStandupCreate";
+import { getRespondedUserName, getUnrespondedUserName } from "./handleStandupCreate";
 
 const getBotFirstMessage = async (message: Message): Promise<Message | undefined> => {
 
@@ -54,13 +53,16 @@ export const handleStandupReply = async (message: Message) => {
   await botMessage?.edit({
     content:
       botMessage.content.replace(
-        `<@${lastMessage.userId}>⏰`,
-        `<@${lastMessage.userId}>✅ \n`
+        getUnrespondedUserName(lastMessage.userId),
+        getRespondedUserName(lastMessage.userId)
       )
   })
 
-  if (!botMessage?.content.includes('⏰')) await message.channel.send("All good now!")
+  if (!botMessage?.content.includes('⏰')) {
+    await message.channel.send("All good now!")
+    removeThread(message.channel.id);
 
+  }
   // check message - parentId is classroom ✅
   // check the thread is a standup thread ✅
   // check there is a bot message with @people. ✅
