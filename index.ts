@@ -15,14 +15,14 @@ import { handleStandupCreate } from "./handlers/handleStandupCreate";
 import { handleStandupReply } from "./handlers/handleStandupReply";
 
 
-// const api = express();
-// api.get('/', (req, res) => {
-//   res.status(200).send("henlo!")
-// })
+const api = express();
+api.get('/', (req, res) => {
+  res.status(200).send("henlo!")
+})
 
-// api.listen(envVariables.port, () => {
-//   console.log('using port', envVariables.port)
-// })
+api.listen(envVariables.port, () => {
+  console.log('using port', envVariables.port)
+})
 
 client.once('ready', () => {
   console.log('Ready to go go go!');
