@@ -10,7 +10,6 @@ export const client = new Client({
     'GUILD_MEMBERS', // get offline + online users
     'GUILD_PRESENCES', // get offline + online users
     'GUILD_INTEGRATIONS',
-    'GUILD_WEBHOOKS',
   ]
 });
 
