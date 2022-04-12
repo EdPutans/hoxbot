@@ -38,7 +38,7 @@ ${pingPeople}
   const thread = await msg.startThread({ name: defaultThreadName });
 
   thread.send(message)
-  addActiveStandupThread(msg.id, usersToPing.map(u => u.id))
+  addActiveStandupThread(msg.id)
 
   return;
 }

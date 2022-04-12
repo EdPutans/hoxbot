@@ -6,7 +6,7 @@ type JSONFile = {
 }
 
 
-export function addActiveStandupThread(newThreadId: string, users: string[]) {
+export function addActiveStandupThread(newThreadId: string) {
   const file = fs.readFileSync(fileName, { encoding: 'utf-8' });
   const fileCopy: JSONFile = JSON.parse(file)
 
