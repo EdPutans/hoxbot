@@ -10,8 +10,7 @@ A discord bot meant for the Hoxton staff to use.
 - [x] allowing people to mark the thread as resolved / unresolved
 - [x] quickly posting a zoom link to the meeting]
 - [X] fast creation of a new event 
-
-The bot is hosted on Glitch on the hoxtons.dev account 
+- [X] quick create stand up thread, which tracks which "Student" permission members replied in it.
 
 ## Installation and setup
 
@@ -38,3 +37,11 @@ running
 Note that `nodemon` which runs the server will restart everytime files change. That includes the `/standup` command, which updates the local `activeStandupThreads.json` file
 
 Once done, push the changes and restart the container
+
+## Deployment
+
+The project is currently deployed on Heroku with Ed's account: https://hoxtabot.herokuapp.com/
+To prevent the app from sleeping, it is being pinged every 12 minutes by https://cron-job.org/en/
+
+Therefore:
+### DO NOT REMOVE THE "USELESS" EXPRESS ROUTES
