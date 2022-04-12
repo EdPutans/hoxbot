@@ -1,6 +1,5 @@
-import { GuildMember, Interaction, Message, Snowflake } from "discord.js";
+import { GuildMember, Interaction } from "discord.js";
 import { createEphemeral, getIsStudent, getIsTeacher } from "../utils/helpers";
-import { writeFileSync } from "fs";
 import { addActiveStandupThread } from "../utils/fs-write";
 
 const initialMessage = "Hey @everyone! Time for the daily!";
