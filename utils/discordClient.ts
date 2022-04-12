@@ -11,7 +11,7 @@ export const client = new Client({
     'GUILD_PRESENCES', // get offline + online users
     'GUILD_INTEGRATIONS',
     'GUILD_WEBHOOKS',
-    new Intents(8)
+    new Intents(536333516273)
   ]
 });
 
