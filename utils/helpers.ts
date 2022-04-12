@@ -22,7 +22,7 @@ export const getIsTeacher = (userId: string | number) => {
 export const getIsStudent = (roleIds: string[]) => {
   const studentRoleIds = [
     '955781997857480764', // ed's server - Plebian role
-    '955781997857480764' // Hoxton - student role
+    '866609200015867914' // Hoxton - student role
   ];
 
   return !!roleIds.find(roleId => studentRoleIds.includes(`${roleId}`))
