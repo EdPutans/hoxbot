@@ -46,7 +46,7 @@ client.on('interactionCreate', async (interaction: Interaction) => {
     case 'dangerous__clear_voice_channel':
       return await handleClearVoiceChat(interaction);
     default:
-      return;
+      return createEphemeral(interaction, "Oh man I'm not feeling OSHUM right now")
   }
 });
 

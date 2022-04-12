@@ -25,11 +25,11 @@ export const handleStandupCreate = async (interaction: Interaction) => {
 
   const message =
     `
-  - How did yesterday go?
-  - What's the plan for today?
-  - Any ~~cock~~ blockers?
+- How did yesterday go?
+- What's the plan for today?
+- Any blockers?
 
-Waiting for answers:
+Waiting for answers from the following people:
 ${pingPeople}
 `;
 
