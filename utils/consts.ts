@@ -4,7 +4,7 @@ export const solvedThreadPrefix = '💚'
 
 export const classRoomIds = [
   '866611696293117962', // hoxton => #classroom
-  '956513137996230677' // ed-> general 
+  '960927348419600425' // ed-> general 
 ]
 
 export const supportChannelIds = [

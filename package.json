@@ -6,7 +6,7 @@
   "scripts": {
     "setup": "npx ts-node registerCommands.ts",
     "start": "tsc && npx node build/index.js",
-    "dev": "npx nodemon index.ts",
+    "dev": "npx nodemon index.ts --ignore activeStandupThreads.json",
     "start-ts": "npx ts-node index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"

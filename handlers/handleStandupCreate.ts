@@ -1,5 +1,13 @@
 import { GuildMember, Interaction, Message, Snowflake } from "discord.js";
 import { createEphemeral, getIsStudent, getIsTeacher } from "../utils/helpers";
+import { writeFileSync } from "fs";
+import { addActiveStandupThread } from "../utils/fs-write";
+
+const initialMessage = "Hey @everyone! Time for the daily!";
+const defaultThreadName = `Daily standup time!!!!`;
+
+export const getUnrespondedUserName = (userId: string) => `<@${userId}>⏰`;
+export const getRespondedUserName = (userId: string) => `<@${userId}>✅`;
 
 export const handleStandupCreate = async (interaction: Interaction) => {
   if (!interaction.isCommand()) return await createEphemeral(interaction, `Not a command?`);
@@ -14,21 +22,23 @@ export const handleStandupCreate = async (interaction: Interaction) => {
     return getIsStudent(roleIds);
   })
 
-  const pingPeople: string[] = usersToPing.map(user => `<@${user.id}>`)
+  const pingPeople: string = usersToPing.map(user => getUnrespondedUserName(user.id) + '\n').join('');
 
-  const message = `Hey @everyone! Standup time!\n
+  const message =
+    `
   - How did yesterday go?
   - What's the plan for today?
   - Any ~~cock~~ blockers?
 
-${pingPeople.join('⏰ \n')}
-  `;
+Waiting for answers:
+${pingPeople}
+`;
 
-  const msg = await interaction.channel.send(message);
+  const msg = await interaction.channel.send(initialMessage);
+  const thread = await msg.startThread({ name: defaultThreadName });
 
-  await msg.startThread({
-    name: 'Daily standup time!!!!',
-  })
+  thread.send(message)
+  addActiveStandupThread(msg.id)
 
   return;
 }

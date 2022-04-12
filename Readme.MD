@@ -30,10 +30,11 @@ npm run setup
 ```
 2. Create a handler function following the docs or existing commands
 3. Add that handler to `index.ts` file under the appropriate section 
-4. Test your changes by disabling the bot running in the host container and running
+4. Test your changes by disabling the bot running in the host container and 
+running
  ```
- npm start
+ npm run dev
  ```
-
+Note that `nodemon` which runs the server will restart everytime files change. That includes the `/standup` command, which updates the local `activeStandupThreads.json` file
 
 Once done, push the changes and restart the container

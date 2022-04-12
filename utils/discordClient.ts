@@ -8,7 +8,10 @@ export const client = new Client({
     'GUILD_MESSAGE_REACTIONS',// working with threads
     'GUILDS', // working with threads
     'GUILD_MEMBERS', // get offline + online users
-    'GUILD_PRESENCES' // get offline + online users
+    'GUILD_PRESENCES', // get offline + online users
+    'GUILD_INTEGRATIONS',
+    'GUILD_WEBHOOKS',
+
   ]
 });
 
