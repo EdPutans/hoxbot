@@ -57,6 +57,7 @@ client.on('messageCreate', async (message: Message) => {
   await handleStandupReply(message)
   await handleAutoSupportThread(message);
   await handleEasterEgg(message)
+  return;
 });
 
 client.login(envVariables.token);

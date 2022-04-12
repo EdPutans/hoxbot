@@ -1,7 +1,8 @@
 import { Message } from "discord.js"
 
-export const handleEasterEgg = (message: Message) => {
+export const handleEasterEgg = async (message: Message) => {
   if (message.content.toLowerCase().includes('yeet')) {
-    message.reply('Bruh')
+    return await message.reply('Bruh')
   }
+  return;
 }
