@@ -15,7 +15,7 @@ A discord bot meant for the Hoxton staff to use.
 ## Installation and setup
 
 The usual:
-s
+
 ```js
 npm install
 ```
@@ -34,7 +34,7 @@ running
  ```
  npm run dev
  ```
-Note that `nodemon` which runs the server will restart everytime files change. That includes the `/standup` command, which updates the local `activeStandupThreads.json` file
+Note that `nodemon` which runs the server will restart everytime files change. 
 
 Once done, push the changes and restart the container
 
