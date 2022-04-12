@@ -1,4 +1,4 @@
-import { Client, Intents, Channel } from "discord.js";
+import { Client, Channel } from "discord.js";
 
 export const client = new Client({
   intents: [
@@ -11,7 +11,6 @@ export const client = new Client({
     'GUILD_PRESENCES', // get offline + online users
     'GUILD_INTEGRATIONS',
     'GUILD_WEBHOOKS',
-    new Intents(536333516273)
   ]
 });
 
