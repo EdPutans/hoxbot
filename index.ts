@@ -50,7 +50,7 @@ client.on('interactionCreate', async (interaction: Interaction) => {
   }
 });
 
-// TEST PUSH TO MASTER
+// TEST PUSH TO MASTER 2
 client.on('messageCreate', async (message: Message) => {
   if (message.author.id === envVariables.clientId) return; // dont reply to bot messages
   if (message.system) return;
