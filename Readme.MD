@@ -20,6 +20,16 @@ The usual:
 npm install
 ```
 
+Create a `.env` file and create the following environment variables:
+```
+BOT_TOKEN
+CLIENT_ID
+CLIENT_SECRET
+SERVER_ID
+
+ED_ZOOM
+NICO_ZOOM
+```
 ## Adding / modifying commands
 
 To add a new command:
