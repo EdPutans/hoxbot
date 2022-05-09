@@ -3,8 +3,9 @@ import { ZoomLinks } from "./types";
 export const solvedThreadPrefix = '💚'
 
 export const classRoomIds = [
-  '866611696293117962', // hoxton => #classroom
-  '960927348419600425' // ed-> general 
+  '866611696293117962', // hoxton => #classroom cohort1
+  '960927348419600425', // ed-> general 
+  '969302750271787018', // hoxton => #classroom cohort2
 ]
 
 export const supportChannelIds = [
