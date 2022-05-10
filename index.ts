@@ -29,8 +29,8 @@ client.once('ready', () => {
 });
 
 client.on('interactionCreate', async (interaction: Interaction) => {
-  if (!interaction.isCommand()) return createEphemeral(interaction, 'its not a command what')
-  if (!interaction.commandName) return createEphemeral(interaction, 'Something wrong with this command')
+  if (!interaction.isCommand()) return await createEphemeral(interaction, 'its not a command what')
+  if (!interaction.commandName) return await createEphemeral(interaction, 'Something wrong with this command')
 
   switch (interaction.commandName as HOXCommand) {
     case 'zoom':
@@ -46,7 +46,7 @@ client.on('interactionCreate', async (interaction: Interaction) => {
     case 'dangerous__clear_voice_channel':
       return await handleClearVoiceChat(interaction);
     default:
-      return createEphemeral(interaction, "Oh man I'm not feeling OSHUM right now")
+      return await createEphemeral(interaction, "Oh man I'm not feeling OSHUM right now")
   }
 });
 

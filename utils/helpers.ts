@@ -2,12 +2,13 @@ import { Interaction } from "discord.js";
 import { supportChannelIds, zoomLinks } from "./consts";
 
 export const getIsSupportThread = (channelId: string) => {
-  return supportChannelIds.includes(channelId);
+  const isSupportThread = supportChannelIds.includes(channelId);
+  return isSupportThread;
 }
 
-export const createEphemeral = (interaction: Interaction, content: string) => {
+export const createEphemeral = async (interaction: Interaction, content: string) => {
   if (!interaction.isCommand()) return;
-  return interaction.reply({
+  return await interaction.reply({
     content,
     ephemeral: true
   })
