@@ -11,7 +11,7 @@ export const handleZoom = async (interaction: Interaction) => {
   const userId = `${interaction.user.id}` as keyof ZoomLinks;
   const defaultZoomLink = zoomLinks[userId]?.link;
 
-  if (!defaultZoomLink) return createEphemeral(interaction, "You don't have access to this feature!")
+  if (!defaultZoomLink) return await createEphemeral(interaction, "You don't have access to this feature!")
 
   const zoomLink = interaction.options.get("zoom-link")?.value || defaultZoomLink;
   const message = interaction.options.get("message")?.value || defaultMessage;
