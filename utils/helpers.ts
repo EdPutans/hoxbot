@@ -1,9 +1,12 @@
 import { Interaction } from "discord.js";
-import { supportChannelIds, zoomLinks } from "./consts";
+import { supportChannelIds, classRoomIds, zoomLinks } from "./consts";
 
 export const getIsSupportThread = (channelId: string) => {
   const isSupportThread = supportChannelIds.includes(channelId);
   return isSupportThread;
+}
+export const getIsClassroomThread = (channelId: string) => {
+  return classRoomIds.includes(channelId);
 }
 
 export const createEphemeral = async (interaction: Interaction, content: string) => {

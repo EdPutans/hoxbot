@@ -1,6 +1,8 @@
 import { envVariables } from "./getEnvVariables";
 import { ZoomLinks } from "./types";
-export const solvedThreadPrefix = '💚'
+export const solvedSupportThreadPrefix = '💚'
+export const solvedClassroomThreadPrefix = '💜'
+
 
 export const classRoomIds = [
   '866611696293117962', // hoxton => #classroom cohort1
