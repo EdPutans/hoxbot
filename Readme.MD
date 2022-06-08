@@ -2,15 +2,15 @@
 
 ## Purpose
 
-A discord bot meant for the Hoxton staff to use.
+A discord bot meant for both the Hoxton staff and students to use!
 
 ## Features
 
 - [x] automatically transforming questions in the support channel into threads
-- [x] allowing people to mark the thread as resolved / unresolved
-- [x] quickly posting a zoom link to the meeting]
+- [x] allowing people to mark a thread as resolved / unresolved, as long as the thread is a #Classroom or #Support thread
+- [x] quickly posting a zoom link to a meeting
 - [X] fast creation of a new event 
-- [X] quick create stand up thread, which tracks which "Student" permission members replied in it.
+- [X] quick create stand up thread, which tracks which students replied in it. (A student is an account with Student permission).
 
 ## Installation and setup
 
