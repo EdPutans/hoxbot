@@ -14,6 +14,9 @@ export const handleAutoSupportThread = async (message: Message) => {
   if (!message.channel) return;
   if (!getIsSupportThread(message.channel.id)) return;
 
+  // the bot crashes if the message is longer than 100 chars  
+  if (message.content.length >= 99) return;
+
   const thread = await message.startThread({
     name: message.content,
   })
