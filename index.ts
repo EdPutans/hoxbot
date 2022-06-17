@@ -29,41 +29,46 @@ client.once('ready', () => {
 });
 
 client.on('interactionCreate', async (interaction: Interaction) => {
-  if (!interaction.isCommand()) return await createEphemeral(interaction, 'its not a command what')
-  if (!interaction.commandName) return await createEphemeral(interaction, 'Something wrong with this command')
+  try {
+    if (!interaction.isCommand()) return await createEphemeral(interaction, 'its not a command what')
+    if (!interaction.commandName) return await createEphemeral(interaction, 'Something wrong with this command')
 
-  switch (interaction.commandName as HOXCommand) {
-    case 'zoom':
-      return await handleZoom(interaction);
-    case 'standup':
-      return await handleStandupCreate(interaction);
-    case 'solved':
-      return await handleSolved(interaction);
-    case 'unsolve':
-      return await handleUnsolve(interaction);
-    case 'event':
-      return await handleEvent(interaction)
-    case 'dangerous__clear_voice_channel':
-      return await handleClearVoiceChat(interaction);
-    default:
-      return await createEphemeral(interaction, "Oh man I'm not feeling OSHUM right now")
+    switch (interaction.commandName as HOXCommand) {
+      case 'zoom':
+        return await handleZoom(interaction);
+      case 'standup':
+        return await handleStandupCreate(interaction);
+      case 'solved':
+        return await handleSolved(interaction);
+      case 'unsolve':
+        return await handleUnsolve(interaction);
+      case 'event':
+        return await handleEvent(interaction)
+      case 'dangerous__clear_voice_channel':
+        return await handleClearVoiceChat(interaction);
+      default:
+        return await createEphemeral(interaction, "Oh man I'm not feeling OSHUM right now")
+    }
+  } catch (e) {
+    console.error("Something died. ", e)
   }
 });
 
-// TEST PUSH TO MASTER 2
 client.on('messageCreate', async (message: Message) => {
-  if (message.author.id === envVariables.clientId) return; // dont reply to bot messages
-  if (message.system) return;
+  try {
+    if (message.author.id === envVariables.clientId) return; // dont reply to bot messages
+    if (message.system) return;
 
-  await handleStandupReply(message)
-  await handleAutoSupportThread(message);
-  await handleEasterEgg(message)
-  return;
+    await handleStandupReply(message)
+    await handleAutoSupportThread(message);
+    await handleEasterEgg(message)
+    return;
+  } catch (e) {
+    console.error("Something died. ", e)
+  }
 });
 
 client.login(envVariables.token);
-
-
 
 process.on("exit", () => {
   console.log("CYA LOSERS!")
