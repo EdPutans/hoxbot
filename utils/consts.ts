@@ -7,7 +7,7 @@ export const solvedClassroomThreadPrefix = '💜'
 export const classRoomIds = [
   '866611696293117962', // hoxton => #classroom cohort1
   '969302671121072128', // hoxton => #classroom cohort2
-  '960927348419600425', // ed-> general 
+  '955465593191018547', // ed-> #support 
   '973495713919041596' // hoxton - #test-classroom
 ]
 
