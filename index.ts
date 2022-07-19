@@ -1,6 +1,6 @@
 import { Interaction, Message, Client, Intents, Channel } from "discord.js";
 import { handleAutoSupportThread } from "./handlers/autoSupportThread";
-import { handleEasterEgg } from "./handlers/easterEggs";
+import { handleEasterEgg, handleNoice } from "./handlers/easterEggs";
 import { handleEvent } from "./handlers/event";
 import { handleClearVoiceChat } from "./handlers/handleClearVoiceChat";
 import { handleSolved } from "./handlers/solved";
@@ -62,6 +62,7 @@ client.on('messageCreate', async (message: Message) => {
     await handleStandupReply(message)
     await handleAutoSupportThread(message);
     await handleEasterEgg(message)
+    await handleNoice(message)
     return;
   } catch (e) {
     console.error("Something died. ", e)
