@@ -6,3 +6,10 @@ export const handleEasterEgg = async (message: Message) => {
   }
   return;
 }
+
+export const handleNoice = async (message: Message) => {
+  if (message.content.toLowerCase().includes(' 69')) {
+    return await message.react('990896048929136710')
+  }
+  return;
+}
