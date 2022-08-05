@@ -17,9 +17,12 @@ export const handleAutoSupportThread = async (message: Message) => {
   // don't autothread the staff
   if (getIsTeacher(message.author.id)) return;
 
-  // the bot crashes if the message is longer than 100 chars - so we slice it
+  // the bot crashes if the message is longer than ~~100~~ 80 chars - so we slice it.
+  // UPD: 80, not 100 - handleSolve and handleUnsolve take up some characters and can break this.
+  const threadStart = message.content.length > 80? `${message.content.slice(0, 80)}...` : message.content.slice(0, 80);
+  
   const thread = await message.startThread({
-    name: message.content.slice(0, 100),
+    name: threadStart,
   })
 
   const channel = await client.channels.cache.get(thread.id);
