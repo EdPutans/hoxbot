@@ -42,8 +42,6 @@ ${pingPeople}
   const thread = await msg.startThread({ name: defaultThreadName });
 
   await thread.send(message)
-  // addActiveStandupThread(msg.id)
-
   return;
 }
 
