@@ -1,9 +1,18 @@
 import { GuildMember, Interaction } from "discord.js";
 import { createEphemeral, getIsStudent, getIsTeacher } from "../utils/helpers";
-import { addActiveStandupThread } from "../utils/fs-write";
 
-const initialMessage = "Hey @everyone! Time for the daily!";
-const defaultThreadName = `Daily standup time!!!!`;
+export const initialMessage = "Hey @everyone! Time for the daily!";
+export const defaultThreadName = `Daily standup time!!!!`;
+
+
+// WARNING: Do not edit the spacing. Will break other functionality.
+export const botStarterMessage = `- How did yesterday go?
+- What's the plan for today?
+- Any blockers?
+
+Waiting for answers from the following people:`
+
+
 
 export const getUnrespondedUserName = (userId: string) => `<@${userId}>⏰`;
 export const getRespondedUserName = (userId: string) => `<@${userId}>✅`;
@@ -17,19 +26,16 @@ export const handleStandupCreate = async (interaction: Interaction) => {
   if (!getIsTeacher(interaction.user.id)) return await createEphemeral(interaction, `This command isn't available to you :P`);
 
   const usersToPing = interaction.channel.members.filter((user: GuildMember) => {
-    const roleIds = user.roles.cache.map(role => role.id)
-    return getIsStudent(roleIds);
+    // const roleIds = user.roles.cache.map(role => role.id)
+    // return getIsStudent(roleIds);
+    return user.id == '815288587662000159';
   })
 
   const pingPeople: string = usersToPing.map(user => getUnrespondedUserName(user.id) + '\n').join('');
 
   const message =
     `
-- How did yesterday go?
-- What's the plan for today?
-- Any blockers?
-
-Waiting for answers from the following people:
+${botStarterMessage}
 ${pingPeople}
 `;
 
@@ -37,7 +43,7 @@ ${pingPeople}
   const thread = await msg.startThread({ name: defaultThreadName });
 
   await thread.send(message)
-  addActiveStandupThread(msg.id)
+  // addActiveStandupThread(msg.id)
 
   return;
 }

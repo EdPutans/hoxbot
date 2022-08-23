@@ -1,9 +1,19 @@
 import { Message } from "discord.js";
 import { classRoomIds } from "../utils/consts";
 import client from "../utils/discordClient";
-import { getActiveStandupThread, removeActiveStandupThread } from "../utils/fs-write";
 import { envVariables } from "../utils/getEnvVariables";
-import { getRespondedUserName, getUnrespondedUserName } from "./handleStandupCreate";
+import { botStarterMessage, getRespondedUserName, getUnrespondedUserName } from "./handleStandupCreate";
+
+
+function getIsStandupThread(botMessage: Message) {
+  return botMessage?.content.includes(botStarterMessage)
+}
+
+function getIsClosedStandupThread(botMessage: Message) {
+  if (!getIsStandupThread(botMessage)) return;
+  return !botMessage?.content.includes('⏰')
+}
+
 
 const getBotFirstMessage = async (message: Message): Promise<Message | undefined> => {
   const channel = await client.channels.cache.get(message.channelId);
@@ -23,21 +33,25 @@ const getBotFirstMessage = async (message: Message): Promise<Message | undefined
 
 export const handleStandupReply = async (message: Message) => {
   if (!message.channel) return;
-  if (!getActiveStandupThread(message.channel.id)) return;
   if (!message.channel.isThread()) return;
   if (!message.channel.parentId) return;
+
   if (!classRoomIds.includes(message.channel.parentId)) return;
 
+  // prevents Collection errors
   const replies = message.channel.messages.cache.map(({ id, content, author }) => ({ id, content, userId: author.id }))
   const lastMessage = replies[replies.length - 1];
 
   const botMessage = await getBotFirstMessage(message);
   if (!botMessage?.content) return;
 
+  if (getIsClosedStandupThread(botMessage)) return;
+
   const doesStudentNeedToReply = botMessage.toString().includes(getUnrespondedUserName(lastMessage.userId))
   if (!doesStudentNeedToReply) return;
 
-  await botMessage?.edit({
+  // ⏰ => ✅
+  const updatedBotMessage = await botMessage?.edit({
     content:
       botMessage.content.replace(
         getUnrespondedUserName(lastMessage.userId),
@@ -45,11 +59,8 @@ export const handleStandupReply = async (message: Message) => {
       )
   })
 
-  if (!botMessage?.content.includes('⏰')) {
-
-
+  // if all done -> "close"
+  if (getIsClosedStandupThread(updatedBotMessage)) {
     await message.channel.send(`Nice work! Everybody replied!`)
-    removeActiveStandupThread(message.channel.id);
   }
-
 }

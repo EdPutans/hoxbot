@@ -8,7 +8,7 @@ export const classRoomIds = [
   '866611696293117962', // hoxton => #classroom cohort1
   '969302671121072128', // hoxton => #classroom cohort2
   '960927348419600425', // ed-> #general 
-  '973495713919041596' // hoxton - #test-classroom
+  '1011563992512213022' // hoxton - #test-classroom
 ]
 
 export const supportChannelIds = [
