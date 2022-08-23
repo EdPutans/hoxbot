@@ -26,9 +26,8 @@ export const handleStandupCreate = async (interaction: Interaction) => {
   if (!getIsTeacher(interaction.user.id)) return await createEphemeral(interaction, `This command isn't available to you :P`);
 
   const usersToPing = interaction.channel.members.filter((user: GuildMember) => {
-    // const roleIds = user.roles.cache.map(role => role.id)
-    // return getIsStudent(roleIds);
-    return user.id == '815288587662000159';
+    const roleIds = user.roles.cache.map(role => role.id)
+    return getIsStudent(roleIds);
   })
 
   const pingPeople: string = usersToPing.map(user => getUnrespondedUserName(user.id) + '\n').join('');
