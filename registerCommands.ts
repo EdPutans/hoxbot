@@ -8,6 +8,7 @@ const commands = [
   new SlashCommandBuilder().setName(HOXCommand.solved).setDescription('Marks thread as solved'),
   new SlashCommandBuilder().setName(HOXCommand.standup).setDescription('Post a standup message'),
   new SlashCommandBuilder().setName(HOXCommand.unsolve).setDescription('Marked as solved by accident? No worries Im here for ya'),
+  new SlashCommandBuilder().setName(HOXCommand.fixThread).setDescription('Fix this standup thread if borked?'),
 
   // still an experimental feature. No API support.
   // new SlashCommandBuilder().setName(HOXCommand.dangerous__clear_voice_channel).setDescription('Clear voice channel chat'),

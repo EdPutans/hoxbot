@@ -13,6 +13,7 @@ import { HOXCommand } from "./utils/types";
 import express from 'express'
 import { handleStandupCreate } from "./handlers/handleStandupCreate";
 import { handleStandupReply } from "./handlers/handleStandupReply";
+import { TEMP_handleStandupFix } from "./handlers/handleFix";
 
 
 const api = express();
@@ -43,7 +44,9 @@ client.on('interactionCreate', async (interaction: Interaction) => {
       case 'unsolve':
         return await handleUnsolve(interaction);
       case 'event':
-        return await handleEvent(interaction)
+        return await handleEvent(interaction);
+      case 'fix-thread':
+        return await TEMP_handleStandupFix(interaction);
       case 'dangerous__clear_voice_channel':
         return await handleClearVoiceChat(interaction);
       default:
