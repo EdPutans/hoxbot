@@ -1,9 +1,18 @@
 import { GuildMember, Interaction } from "discord.js";
 import { createEphemeral, getIsStudent, getIsTeacher } from "../utils/helpers";
-import { addActiveStandupThread } from "../utils/fs-write";
 
-const initialMessage = "Hey @everyone! Time for the daily!";
-const defaultThreadName = `Daily standup time!!!!`;
+export const initialMessage = "Hey @everyone! Time for the daily!";
+export const defaultThreadName = `Daily standup time!!!!`;
+
+
+// WARNING: Do not edit the spacing. Will break other functionality.
+export const botStarterMessage = `- How did yesterday go?
+- What's the plan for today?
+- Any blockers?
+
+Waiting for answers from the following people:`
+
+
 
 export const getUnrespondedUserName = (userId: string) => `<@${userId}>⏰`;
 export const getRespondedUserName = (userId: string) => `<@${userId}>✅`;
@@ -25,11 +34,7 @@ export const handleStandupCreate = async (interaction: Interaction) => {
 
   const message =
     `
-- How did yesterday go?
-- What's the plan for today?
-- Any blockers?
-
-Waiting for answers from the following people:
+${botStarterMessage}
 ${pingPeople}
 `;
 
@@ -37,8 +42,6 @@ ${pingPeople}
   const thread = await msg.startThread({ name: defaultThreadName });
 
   await thread.send(message)
-  addActiveStandupThread(msg.id)
-
   return;
 }
 
