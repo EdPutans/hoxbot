@@ -14,6 +14,7 @@ import express from 'express'
 import { handleStandupCreate } from "./handlers/handleStandupCreate";
 import { handleStandupReply } from "./handlers/handleStandupReply";
 import { TEMP_handleStandupFix } from "./handlers/handleFix";
+import { handleSolvedBy } from "./handlers/solvedBy";
 
 
 const api = express();
@@ -29,6 +30,8 @@ client.once('ready', () => {
   console.log('Ready to go go go!');
 });
 
+
+
 client.on('interactionCreate', async (interaction: Interaction) => {
   try {
     if (!interaction.isCommand()) return await createEphemeral(interaction, 'its not a command what')
@@ -43,8 +46,8 @@ client.on('interactionCreate', async (interaction: Interaction) => {
         return await handleSolved(interaction);
       case 'unsolve':
         return await handleUnsolve(interaction);
-      case 'event':
-        return await handleEvent(interaction);
+      case 'fixed_by':
+        return await handleSolvedBy(interaction);
       case 'fix-thread':
         return await TEMP_handleStandupFix(interaction);
       case 'dangerous__clear_voice_channel':

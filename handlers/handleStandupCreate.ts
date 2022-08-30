@@ -13,7 +13,6 @@ export const botStarterMessage = `- How did yesterday go?
 Waiting for answers from the following people:`
 
 
-
 export const getUnrespondedUserName = (userId: string) => `<@${userId}>⏰`;
 export const getRespondedUserName = (userId: string) => `<@${userId}>✅`;
 
