@@ -19,8 +19,8 @@ export const handleAutoSupportThread = async (message: Message) => {
 
   // the bot crashes if the message is longer than ~~100~~ 80 chars - so we slice it.
   // UPD: 80, not 100 - handleSolve and handleUnsolve take up some characters and can break this.
-  const threadStart = message.content.length > 80? `${message.content.slice(0, 80)}...` : message.content.slice(0, 80);
-  
+  const threadStart = message.content.length > 80 ? `${message.content.slice(0, 80)}...` : message.content.slice(0, 80);
+
   const thread = await message.startThread({
     name: threadStart,
   })

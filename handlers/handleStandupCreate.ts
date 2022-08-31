@@ -22,7 +22,8 @@ export const handleStandupCreate = async (interaction: Interaction) => {
   if (!interaction.channel) return await createEphemeral(interaction, `Not in a channel lol what`);
   if (interaction.channel.isThread()) return await createEphemeral(interaction, `Can't use this command in a thread`);
 
-  if (interaction.channel?.type !== 'GUILD_TEXT') return await createEphemeral(interaction, `This command is only available in a classroom channel`);
+  // interaction.channel?.type !== 'GUILD_TEXT'
+  if (interaction.channel?.type !== 0) return await createEphemeral(interaction, `This command is only available in a classroom channel`);
   if (!getIsTeacher(interaction.user.id)) return await createEphemeral(interaction, `This command isn't available to you :P`);
 
   const usersToPing = interaction.channel.members.filter((user: GuildMember) => {

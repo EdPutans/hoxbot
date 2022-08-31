@@ -14,5 +14,4 @@ export enum HOXCommand {
   event = 'event',
   standup = 'standup',
   dangerous__clear_voice_channel = 'dangerous__clear_voice_channel',
-  fixThread = 'fix-thread'
 }

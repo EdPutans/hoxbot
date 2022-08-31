@@ -1,4 +1,4 @@
-import { Interaction, Message, Client, Intents, Channel } from "discord.js";
+import { Interaction, Message } from "discord.js";
 import { handleAutoSupportThread } from "./handlers/autoSupportThread";
 import { handleEasterEgg, handleNoice } from "./handlers/easterEggs";
 import { handleEvent } from "./handlers/event";
@@ -13,7 +13,6 @@ import { HOXCommand } from "./utils/types";
 import express from 'express'
 import { handleStandupCreate } from "./handlers/handleStandupCreate";
 import { handleStandupReply } from "./handlers/handleStandupReply";
-import { TEMP_handleStandupFix } from "./handlers/handleFix";
 
 
 const api = express();
@@ -29,7 +28,7 @@ client.once('ready', () => {
   console.log('Ready to go go go!');
 });
 
-client.on('interactionCreate', async (interaction: Interaction) => {
+client.on('interactionCreate', async (interaction: Interaction): Promise<void> => {
   try {
     if (!interaction.isCommand()) return await createEphemeral(interaction, 'its not a command what')
     if (!interaction.commandName) return await createEphemeral(interaction, 'Something wrong with this command')
@@ -45,8 +44,6 @@ client.on('interactionCreate', async (interaction: Interaction) => {
         return await handleUnsolve(interaction);
       case 'event':
         return await handleEvent(interaction);
-      case 'fix-thread':
-        return await TEMP_handleStandupFix(interaction);
       case 'dangerous__clear_voice_channel':
         return await handleClearVoiceChat(interaction);
       default:
@@ -57,7 +54,7 @@ client.on('interactionCreate', async (interaction: Interaction) => {
   }
 });
 
-client.on('messageCreate', async (message: Message) => {
+client.on('messageCreate', async (message: Message): Promise<void> => {
   try {
     if (message.author.id === envVariables.clientId) return; // dont reply to bot messages
     if (message.system) return;
