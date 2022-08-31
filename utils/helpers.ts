@@ -11,10 +11,11 @@ export const getIsClassroomThread = (channelId: string) => {
 
 export const createEphemeral = async (interaction: Interaction, content: string) => {
   if (!interaction.isCommand()) return;
-  return await interaction.reply({
+  await interaction.reply({
     content,
     ephemeral: true
   })
+  return;
 }
 
 // TODO: transform it to use interaction / message -> user -> roles instead
