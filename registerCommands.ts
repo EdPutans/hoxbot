@@ -1,5 +1,4 @@
-import { REST } from '@discordjs/rest';
-import { SlashCommandBuilder, Routes } from 'discord.js';
+import { SlashCommandBuilder, Routes, REST, SlashCommandStringOption } from 'discord.js';
 import { envVariables } from './utils/getEnvVariables';
 import { HOXCommand } from './utils/types';
 
@@ -10,25 +9,25 @@ const commands = [
 
   // still an experimental feature. No API support.
   // new SlashCommandBuilder().setName(HOXCommand.dangerous__clear_voice_channel).setDescription('Clear voice channel chat'),
-  new SlashCommandBuilder().setName(HOXCommand.zoom).addStringOption(option =>
+  new SlashCommandBuilder().setName(HOXCommand.zoom).addStringOption((option: SlashCommandStringOption) =>
     option.setName('zoom-link')
       .setDescription('Custom zoom link')
       .setRequired(false))
-    .addStringOption(option =>
+    .addStringOption((option: SlashCommandStringOption) =>
       option.setName('message')
         .setDescription('Set a custom message')
         .setRequired(false))
     .setDescription('Post zoom link!'),
 
-  new SlashCommandBuilder().setName(HOXCommand.event).addStringOption(option =>
+  new SlashCommandBuilder().setName(HOXCommand.event).addStringOption((option: SlashCommandStringOption) =>
     option.setName('when')
       .setDescription('when is the event taking place>')
       .setRequired(true))
-    .addStringOption(option =>
+    .addStringOption((option: SlashCommandStringOption) =>
       option.setName('what')
         .setDescription("What's going on?")
         .setRequired(true))
-    .addStringOption(option =>
+    .addStringOption((option: SlashCommandStringOption) =>
       option.setName('where')
         .setDescription("Where is the event happening (Zoom, channel, IRL etc)")
         .setRequired(true))
