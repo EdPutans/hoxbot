@@ -1,41 +1,28 @@
-import { ActionRow, SelectMenuComponent, SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, Interaction, MessageActionRow, MessageSelectMenu, SelectMenuInteraction } from "discord.js";
+
+import { ActionRowBuilder, AutocompleteInteraction, CommandInteraction, Interaction, SelectMenuBuilder, SelectMenuInteraction } from "discord.js";
 import { solvedClassroomThreadPrefix, solvedSupportThreadPrefix } from "../utils/consts";
 import { getIsSupportThread, createEphemeral, getIsClassroomThread } from "../utils/helpers";
 
-export const handleSolvedBy = async (interaction: CommandInteraction) => {
+//TODO: fix
+export const handleSolvedBy = async (interaction: any) => {
+  if (!interaction.isAutocomplete) return;
   if (!interaction.channel?.isThread()) return await createEphemeral(interaction, `You're not inside a thread!`)
   if (!interaction.channel.parentId) return await createEphemeral(interaction, `No parent ID? what?`)
 
-  // const isClassroomChannel = getIsClassroomThread(interaction.channel.parentId);
-  // const isSupportChannel = getIsSupportThread(interaction.channel.parentId);
+  const focusedOption = interaction.options.getFocused(true);
+  let choices: string[] = [];
 
-  // const solvedPrefix = isClassroomChannel ? solvedClassroomThreadPrefix : solvedSupportThreadPrefix;
+  if (focusedOption.name === 'query') {
+    choices = ['Popular Topics: Threads', 'Sharding: Getting started', 'Library: Voice Connections', 'Interactions: Replying to slash commands', 'Popular Topics: Embed preview'];
+  }
 
-  // if (interaction.channel.name.startsWith(solvedPrefix)) return await createEphemeral(interaction, `Umm.. the channel is already solved?`)
+  if (focusedOption.name === 'version') {
+    choices = ['v9', 'v11', 'v12', 'v13', 'v14'];
+  }
 
-  // if (!isSupportChannel && !isClassroomChannel) return await createEphemeral(interaction, `You're not inside a #support or #classroom thread!`)
-  // if (interaction.channel.name.startsWith(solvedPrefix)) return await createEphemeral(interaction, 'Yo, the channel is already "solved"!')
-
-  const row = new MessageActionRow()
-    .addComponents(
-
-      new MessageSelectMenu()
-        .setCustomId('select')
-        .setPlaceholder('Nothing selected')
-        .addOptions(
-          {
-            label: 'Select me',
-            description: 'This is a description',
-            value: 'first_option',
-          },
-          {
-            label: 'You can select me too',
-            description: 'This is also a description',
-            value: 'second_option',
-          },
-        ),
-    );
-
-  await interaction.reply({ content: 'Pong!', components: [row] });
+  const filtered = choices.filter(choice => choice.startsWith(focusedOption.value));
+  await interaction.respond(
+    filtered.map(choice => ({ name: choice, value: choice })),
+  );
+  return;
 }

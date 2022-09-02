@@ -1,6 +1,4 @@
-import { REST } from '@discordjs/rest';
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { Routes } from 'discord-api-types/v9';
+import { SlashCommandBuilder, Routes, REST } from 'discord.js';
 import { envVariables } from './utils/getEnvVariables';
 import { HOXCommand } from './utils/types';
 
@@ -8,7 +6,6 @@ const commands = [
   new SlashCommandBuilder().setName(HOXCommand.solved).setDescription('Marks thread as solved'),
   new SlashCommandBuilder().setName(HOXCommand.standup).setDescription('Post a standup message'),
   new SlashCommandBuilder().setName(HOXCommand.unsolve).setDescription('Marked as solved by accident? No worries Im here for ya'),
-  new SlashCommandBuilder().setName(HOXCommand.fixThread).setDescription('Fix this standup thread if borked?'),
 
   // still an experimental feature. No API support.
   // new SlashCommandBuilder().setName(HOXCommand.dangerous__clear_voice_channel).setDescription('Clear voice channel chat'),
@@ -37,16 +34,21 @@ const commands = [
         .setRequired(true))
     .setDescription('Create a new event in this channel'),
 
-  new SlashCommandBuilder().setName(HOXCommand.fixed_by)
-    .setDescription('Fix byyyyy')
+  new SlashCommandBuilder()
+    .setName(HOXCommand.fixed_by)
+    .setDescription('Search discordjs.guide!')
     .addStringOption(option =>
-      option.setName('input')
-        .setDescription('The input to echo back')
+      option.setName('query')
+        .setDescription('Phrase to search for')
         .setRequired(true)
-        .setChoices([
-          ['Ed', '<@815288587662000159>']])
-    )
-
+        .setChoices(
+          { name: 'Ed', value: 'Ed' },
+          { name: 'Nico', value: 'Nico' }
+        )
+    ),
+  new SlashCommandBuilder()
+    .setName("test")
+    .setDescription('Testing a modal')
 
 ]
   .map(command => command.toJSON());
