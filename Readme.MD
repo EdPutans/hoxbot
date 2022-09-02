@@ -4,13 +4,18 @@
 
 A discord bot meant for both the Hoxton staff and students to use!
 
-## Features
+For more details on how to use and build features, check out DiscordJS official docs.
 
+## Features
+### Current:
 - [x] automatically transforming questions in the support channel into threads
 - [x] allowing people to mark a thread as resolved / unresolved, as long as the thread is a #Classroom or #Support thread
 - [x] quickly posting a zoom link to a meeting
 - [X] fast creation of a new event 
 - [X] quick create stand up thread, which tracks which students replied in it. (A student is an account with Student permission).
+### WIP:
+- [] award stars to active students
+- [] Custom standup message
 
 ## Installation and setup
 
@@ -50,8 +55,8 @@ Once done, push the changes and restart the container
 
 ## Deployment
 
-The project is currently deployed on Heroku with Ed's account: https://hoxtabot.herokuapp.com/
-To prevent the app from sleeping, it is being pinged every 12 minutes by https://cron-job.org/en/
+The project is currently deployed on Render with Ed's account: https://dashboard.render.com/web/srv-cc8sa82rrk03to1lk1i0
+To prevent the app from sleeping, it is being pinged every 15 minutes by https://cron-job.org/en/
 
 Therefore:
 ### DO NOT REMOVE THE "USELESS" EXPRESS ROUTES
