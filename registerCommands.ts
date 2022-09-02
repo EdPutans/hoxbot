@@ -35,7 +35,7 @@ const commands = [
 ]
   .map(command => command.toJSON());
 
-const rest = new REST({ version: '9' }).setToken(envVariables.token);
+const rest = new REST({ version: '10' }).setToken(envVariables.token);
 
 rest.put(Routes.applicationGuildCommands(envVariables.clientId, envVariables.guildId), { body: commands })
   .then(() => console.log('Successfully registered application commands.'))

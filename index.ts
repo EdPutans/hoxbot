@@ -33,6 +33,8 @@ client.on('interactionCreate', async (interaction: Interaction): Promise<void> =
     if (!interaction.isCommand()) return await createEphemeral(interaction, 'its not a command what')
     if (!interaction.commandName) return await createEphemeral(interaction, 'Something wrong with this command')
 
+    console.info(`${interaction?.user?.username} ran ${interaction?.commandName} on ${new Date()}`)
+
     switch (interaction.commandName as HOXCommand) {
       case 'zoom':
         return await handleZoom(interaction);
@@ -55,9 +57,13 @@ client.on('interactionCreate', async (interaction: Interaction): Promise<void> =
 });
 
 client.on('messageCreate', async (message: Message): Promise<void> => {
+
   try {
     if (message.author.id === envVariables.clientId) return; // dont reply to bot messages
     if (message.system) return;
+
+    // console.info(`${message?.author?.username} posted ${message?.content} on ${new Date()}`)
+    // TODO: think of a better way to log messages that trigger these funcs
 
     await handleStandupReply(message)
     await handleAutoSupportThread(message);
