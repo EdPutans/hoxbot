@@ -1,38 +1,69 @@
-import { ActionRowBuilder, Interaction, ModalActionRowComponentBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
+import { ActionRowBuilder, SelectMenuBuilder, Interaction } from "discord.js";
+import client from "../utils/discordClient";
+import { getIsStudent } from "../utils/helpers";
+
+const customSelectId = "SELECT_USER_WHO_HELPED";
 
 export async function testModal(interaction: Interaction) {
   if (!interaction.isChatInputCommand()) return;
+  if (!interaction.channel?.isThread()) return;
+  if (!interaction.channel.parent) return;
 
-  // Create the modal
-  const modal = new ModalBuilder()
-    .setCustomId('myModal')
-    .setTitle('My Modal');
+  const studentsCollection = interaction.channel?.parent.members;
 
-  // Add components to modal
+  const students = studentsCollection.filter((user) => {
+    const roleIds = user.roles.cache.map((role) => role.id);
+    return getIsStudent(roleIds);
+  });
 
-  // Create the text input components
-  const favoriteColorInput = new TextInputBuilder()
-    .setCustomId('favoriteColorInput')
-    // The label is the prompt the user sees for this input
-    .setLabel("What's your favorite color?")
-    // Short means only a single line of text
-    .setStyle(TextInputStyle.Short);
+  const values = students
+    .map((std) => ({
+      label: std.user.username,
+      value: `${std.user.id} ${std.user.username}`,
+    }))
+    .sort((a, b) => (a.label.toLowerCase() > b.label.toLowerCase() ? 1 : -1));
 
-  const hobbiesInput = new TextInputBuilder()
-    .setCustomId('hobbiesInput')
-    .setLabel("What's some of your favorite hobbies?")
-    // Paragraph means multiple lines of text.
-    .setStyle(TextInputStyle.Paragraph);
+  const row = new ActionRowBuilder<SelectMenuBuilder>().addComponents(
+    new SelectMenuBuilder()
+      .setCustomId(customSelectId)
+      .setPlaceholder("Noone Selected")
+      .addOptions([...values])
+      .setMinValues(0)
+      .setMaxValues(values.length)
+  );
 
-  // An action row only holds one text input,
-  // so you need one action row per text input.
-  const firstActionRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(favoriteColorInput);
-  const secondActionRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(hobbiesInput);
+  await interaction.reply({
+    content: "Select the person who helped you to up their score!",
+    embeds: [],
+    ephemeral: true,
+    components: [row],
+  });
 
-  // Add inputs to the modal
-  modal.addComponents(firstActionRow, secondActionRow);
+  client.on("interactionCreate", async (interaction) => {
+    if (!interaction.isSelectMenu()) return;
+    if (interaction.customId !== customSelectId) return;
+    if (!interaction.channel?.isThread()) return;
 
-  // Show the modal to the user
-  await interaction.showModal(modal);
+    // console.log(interaction.message.content = '-');
+    interaction.message.content = "-";
+    const starChan = await client.channels.fetch("1016324894658658357");
+
+    if (!starChan) return;
+    if (!starChan?.isTextBased()) return;
+
+    const mainMsg = (await starChan.messages.fetch()).last();
+    await mainMsg?.edit({
+      content:
+        mainMsg.content +
+        `
+      ${interaction.id} ${interaction.channel.name}:
+      ${interaction.values.join(", ")}`,
+    });
+
+    await interaction.reply({
+      content: `Your selection was received successfully with interaction ID: ${interaction.id}`,
+      ephemeral: true,
+    });
+  });
   return;
 }
