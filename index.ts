@@ -34,7 +34,8 @@ client.on('interactionCreate', async (interaction: Interaction): Promise<void> =
   try {
     if (!interaction.isCommand()) return await createEphemeral(interaction, 'its not a command what')
     if (!interaction.commandName) return await createEphemeral(interaction, 'Something wrong with this command')
-    console.log('Interaction performed', interaction.commandName, interaction.user.username)
+
+    console.info(`${interaction?.user?.username} ran ${interaction?.commandName} on ${new Date()}`)
 
     switch (interaction.commandName as HOXCommand) {
       case 'zoom':
@@ -47,15 +48,14 @@ client.on('interactionCreate', async (interaction: Interaction): Promise<void> =
         return await handleUnsolve(interaction);
       case 'fixed_by':
         return await handleSolvedBy(interaction);
-      case 'event':
-        return await handleEvent(interaction);
       case "test":
         return await testModal(interaction);
+      case 'event':
+        return await handleEvent(interaction);
       case 'dangerous__clear_voice_channel':
         return await handleClearVoiceChat(interaction);
       default:
-        return;
-      // return await createEphemeral(interaction, "Oh man I'm not feeling OSHUM right now")
+        return await createEphemeral(interaction, "Oh man I'm not feeling OSHUM right now")
     }
   } catch (e) {
     console.error("Something died. ", e)
@@ -63,9 +63,13 @@ client.on('interactionCreate', async (interaction: Interaction): Promise<void> =
 });
 
 client.on('messageCreate', async (message: Message): Promise<void> => {
+
   try {
     if (message.author.id === envVariables.clientId) return; // dont reply to bot messages
     if (message.system) return;
+
+    // console.info(`${message?.author?.username} posted ${message?.content} on ${new Date()}`)
+    // TODO: think of a better way to log messages that trigger these funcs
 
     await handleStandupReply(message)
     await handleAutoSupportThread(message);
