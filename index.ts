@@ -12,7 +12,7 @@ import { HOXCommand } from "./utils/types";
 import express from "express";
 import { handleStandupCreate } from "./handlers/standup/handleStandupCreate";
 import { handleStandupReply } from "./handlers/standup/handleStandupReply";
-import { handleSolvedBy } from "./handlers/autoSupportThreads/solvedBy";
+import { handleSolvedBy } from "./handlers/autoSupportThreads/solvedByInit";
 
 const api = express();
 api.get("/", (req, res) => {

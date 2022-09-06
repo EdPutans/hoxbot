@@ -29,7 +29,7 @@ export const handleStandupCreate = async (interaction: Interaction) => {
       `Can't use this command in a thread`
     );
 
-  // interaction.channel?.type !== 'GUILD_TEXT'
+  // LEGACY EQUIV: interaction.channel?.type !== 'GUILD_TEXT'
   if (interaction.channel?.type !== 0)
     return await createEphemeral(
       interaction,

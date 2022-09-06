@@ -1,4 +1,4 @@
-import { Interaction } from "discord.js";
+import { Interaction, Snowflake } from "discord.js";
 import {
   supportChannelIds,
   classRoomIds,
@@ -27,8 +27,8 @@ export const createEphemeral = async (
 };
 
 // TODO: transform it to use interaction / message -> user -> roles instead
-export const getIsTeacher = (userId: string | number) => {
-  const userIdString = `${userId}`;
+export const getIsTeacher = (userId: Snowflake) => {
+  const userIdString = userId;
   return Object.keys(zoomLinks).includes(userIdString);
 };
 

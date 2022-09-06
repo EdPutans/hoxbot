@@ -40,6 +40,5 @@ export const handleSolved = async (interaction: Interaction) => {
     );
 
   await interaction.channel.setName(solvedPrefix + interaction.channel.name);
-
   return;
 };
