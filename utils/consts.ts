@@ -2,6 +2,7 @@ import { envVariables } from "./getEnvVariables";
 import { ZoomLinks } from "./types";
 export const solvedSupportThreadPrefix = "💚";
 export const solvedClassroomThreadPrefix = "💜";
+export const starSymbol = "⭐";
 
 export const starChannelId = "1016324894658658357";
 

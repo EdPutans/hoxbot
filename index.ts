@@ -1,18 +1,18 @@
 import { Interaction, Message } from "discord.js";
-import { handleAutoSupportThread } from "./handlers/autoSupportThread";
+import { handleAutoSupportThread } from "./handlers/autoSupportThreads/autoSupportThread";
 import { handleEasterEgg, handleNoice } from "./handlers/easterEggs";
 import { handleEvent } from "./handlers/event";
 import { handleClearVoiceChat } from "./handlers/handleClearVoiceChat";
-import { handleSolved } from "./handlers/solved";
+import { handleSolved } from "./handlers/autoSupportThreads/solved";
 import { handleZoom } from "./handlers/zoom";
 import client from "./utils/discordClient";
 import { envVariables } from "./utils/getEnvVariables";
 import { createEphemeral } from "./utils/helpers";
 import { HOXCommand } from "./utils/types";
 import express from "express";
-import { handleStandupCreate } from "./handlers/handleStandupCreate";
-import { handleStandupReply } from "./handlers/handleStandupReply";
-import { handleSolvedBy } from "./handlers/TEST_modal";
+import { handleStandupCreate } from "./handlers/standup/handleStandupCreate";
+import { handleStandupReply } from "./handlers/standup/handleStandupReply";
+import { handleSolvedBy } from "./handlers/autoSupportThreads/solvedBy";
 
 const api = express();
 api.get("/", (req, res) => {

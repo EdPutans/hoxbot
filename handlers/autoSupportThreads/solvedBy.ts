@@ -1,28 +1,36 @@
-import { Channel } from "diagnostics_channel";
 import {
   ActionRowBuilder,
   SelectMenuBuilder,
   Interaction,
   Message,
-  GuildMember,
   Snowflake,
   ChatInputCommandInteraction,
+  Collection,
 } from "discord.js";
-import { starChannelId } from "../utils/consts";
-import client from "../utils/discordClient";
+import { starChannelId, starSymbol } from "../../utils/consts";
+import client from "../../utils/discordClient";
 import {
   createEphemeral,
   getIsClassroomThread,
   getIsStudent,
-} from "../utils/helpers";
+} from "../../utils/helpers";
+import { getSupportQuestionAuthorId } from "./autoSupportThread";
 import { handleSolved } from "./solved";
+
+const customSelectId = "SELECT_USER_WHO_HELPED";
+
+function getThreadAuthorId(
+  messages: Collection<string, Message<true>>
+): Snowflake | null {
+  const botMsgContent = messages.at(1)?.content;
+
+  if (!botMsgContent) return null;
+  return getSupportQuestionAuthorId(botMsgContent);
+}
 
 function createUserStarMessage(userId: Snowflake, nbStars: number) {
   return `<@${userId}> ${nbStars} ${starSymbol}`;
 }
-
-const starSymbol = "🌟";
-const customSelectId = "SELECT_USER_WHO_HELPED";
 
 export async function handleSolvedBy(interaction: Interaction) {
   if (!interaction.isChatInputCommand()) return;
@@ -41,29 +49,32 @@ export async function handleSolvedBy(interaction: Interaction) {
     (msg) => msg.author.id
   );
 
-  const owner = await interaction.channel.fetchOwner();
-
-  console.log({ owner });
+  const originalThreadAuthorId = getThreadAuthorId(
+    interaction.channel.messages.cache
+  );
 
   // ...but keep only the ones that are:
-  const students = interaction.channel?.parent.members.filter((user) => {
-    const roleIds = user.roles.cache.map((role) => role.id);
-    // participants in the thread
-    if (!participatedPeople.includes(user.id)) return false;
+  const starableStudents = interaction.channel?.parent.members.filter(
+    (user) => {
+      // are NOT the original author
+      if (originalThreadAuthorId !== user.id) return false;
 
-    // are a student
-    if (!getIsStudent(roleIds)) return false;
+      // participants in the thread
+      if (!participatedPeople.includes(user.id)) return false;
 
-    // TODO: are NOT the original author
+      // are a student
+      const roleIds = user.roles.cache.map((role) => role.id);
+      if (!getIsStudent(roleIds)) return false;
 
-    return true;
-  });
+      return true;
+    }
+  );
 
   // NOTE: yes, this logic is required since User !== Member
 
-  if (students.size < 2) return;
+  if (starableStudents.size < 1) return;
 
-  const values = students
+  const values = starableStudents
     .map((std) => ({ label: std.user.username, value: std.user.id }))
     .sort((a, b) => (a.label.toLowerCase() > b.label.toLowerCase() ? 1 : -1));
 

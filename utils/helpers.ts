@@ -34,3 +34,7 @@ export const getIsTeacher = (userId: string | number) => {
 
 export const getIsStudent = (roleIds: string[]) =>
   !!roleIds.find((roleId) => studentRoleIds.includes(roleId));
+
+export function getUserIdsFromString(string: string): RegExpMatchArray | null {
+  return string.match(/<?@?!?(\d{17,19})>?/);
+}
