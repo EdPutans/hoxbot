@@ -4,7 +4,6 @@ import { handleEasterEgg, handleNoice } from "./handlers/easterEggs";
 import { handleEvent } from "./handlers/event";
 import { handleClearVoiceChat } from "./handlers/handleClearVoiceChat";
 import { handleSolved } from "./handlers/solved";
-// import { handleUnsolve } from "./handlers/unsolve";
 import { handleZoom } from "./handlers/zoom";
 import client from "./utils/discordClient";
 import { envVariables } from "./utils/getEnvVariables";
@@ -13,8 +12,7 @@ import { HOXCommand } from "./utils/types";
 import express from "express";
 import { handleStandupCreate } from "./handlers/handleStandupCreate";
 import { handleStandupReply } from "./handlers/handleStandupReply";
-import { handleSolvedBy } from "./handlers/solvedBy";
-import { testModal } from "./handlers/TEST_modal";
+import { handleSolvedBy } from "./handlers/TEST_modal";
 
 const api = express();
 api.get("/", (req, res) => {
@@ -35,6 +33,7 @@ client.on(
     try {
       if (!interaction.isCommand())
         return await createEphemeral(interaction, "its not a command what");
+
       if (!interaction.commandName)
         return await createEphemeral(
           interaction,
@@ -54,12 +53,8 @@ client.on(
           return await handleStandupCreate(interaction);
         case "solved":
           return await handleSolved(interaction);
-        // case 'unsolve':
-        //   return await handleUnsolve(interaction);
-        case "fixed_by":
+        case "beta_fixed_by":
           return await handleSolvedBy(interaction);
-        case "test":
-          return await testModal(interaction);
         case "event":
           return await handleEvent(interaction);
         case "dangerous__clear_voice_channel":

@@ -56,18 +56,9 @@ const commands = [
     .setDescription("Create a new event in this channel"),
 
   new SlashCommandBuilder()
-    .setName(HOXCommand.fixed_by)
-    .setDescription("Search discordjs.guide!")
-    .addStringOption((option) =>
-      option
-        .setName("query")
-        .setDescription("Phrase to search for")
-        .setRequired(true)
-        .setChoices(
-          { name: "Ed", value: "Ed" },
-          { name: "Nico", value: "Nico" }
-        )
-    ),
+    .setName(HOXCommand.beta_fixed_by)
+    .setDescription("Fixed but cooler!!"),
+
   new SlashCommandBuilder().setName("test").setDescription("Testing a modal"),
 ].map((command) => command.toJSON());
 

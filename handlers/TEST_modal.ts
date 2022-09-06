@@ -1,10 +1,14 @@
+import { Channel } from "diagnostics_channel";
 import {
   ActionRowBuilder,
   SelectMenuBuilder,
   Interaction,
   Message,
   GuildMember,
+  Snowflake,
+  ChatInputCommandInteraction,
 } from "discord.js";
+import { starChannelId } from "../utils/consts";
 import client from "../utils/discordClient";
 import {
   createEphemeral,
@@ -13,15 +17,20 @@ import {
 } from "../utils/helpers";
 import { handleSolved } from "./solved";
 
+function createUserStarMessage(userId: Snowflake, nbStars: number) {
+  return `<@${userId}> ${nbStars} ${starSymbol}`;
+}
+
+const starSymbol = "🌟";
 const customSelectId = "SELECT_USER_WHO_HELPED";
 
-export async function testModal(interaction: Interaction) {
+export async function handleSolvedBy(interaction: Interaction) {
   if (!interaction.isChatInputCommand()) return;
   if (!interaction.channel?.isThread()) return;
   if (!interaction.channel.parent)
     return await createEphemeral(interaction, "Wrong place my dude");
 
-  // rename channel to solved
+  // run the original handleSolved to rename channel rename channel to solved
   await handleSolved(interaction);
 
   // if its a classroom channel - DON'T propose to starify
@@ -31,6 +40,10 @@ export async function testModal(interaction: Interaction) {
   const participatedPeople = interaction.channel.messages.cache.map(
     (msg) => msg.author.id
   );
+
+  const owner = await interaction.channel.fetchOwner();
+
+  console.log({ owner });
 
   // ...but keep only the ones that are:
   const students = interaction.channel?.parent.members.filter((user) => {
@@ -42,6 +55,7 @@ export async function testModal(interaction: Interaction) {
     if (!getIsStudent(roleIds)) return false;
 
     // TODO: are NOT the original author
+
     return true;
   });
 
@@ -68,48 +82,67 @@ export async function testModal(interaction: Interaction) {
     components: [row],
   });
 
-  client.on("interactionCreate", async (response) => {
-    if (!response.isSelectMenu()) return;
+  // I hate to place it here, but makes it much easier to maintain as it requires some deps from the parent func
+  client.on(
+    "interactionCreate",
+    async (response) =>
+      await handleSelectHelpedOutStudents(response, interaction)
+  );
 
-    interaction.editReply({
-      content: "Thanks for the response!",
-      components: [],
-      embeds: [],
-    });
+  return;
+}
 
-    const starChan = await client.channels.fetch("1016324894658658357");
+async function handleSelectHelpedOutStudents(
+  response: Interaction,
+  parentInteraction: ChatInputCommandInteraction
+) {
+  if (!response.isSelectMenu()) return;
 
-    if (!starChan) return;
-    if (!starChan?.isTextBased()) return;
+  parentInteraction.editReply({
+    content: "Thanks for the response!",
+    components: [],
+    embeds: [],
+  });
 
-    const allStarChannelMessages: Map<any, Message> =
-      await starChan.messages.fetch();
-    const messages = Array.from(allStarChannelMessages.values());
+  // need Channel type so must fetch, no cache.
+  const starChan = await client.channels.fetch(starChannelId);
+  // const starChan = await client.channels.fetch("1016324894658658357");
 
-    // for each of the selected people:
-    response.values.forEach((userId) => {
-      // find the bot message in star channel
-      const targetBotMessage = messages.find((message) =>
-        message.content.includes(userId)
-      );
+  if (!starChan) return;
+  if (!starChan.isTextBased()) return;
+  if (starChan.isDMBased()) return;
 
-      // if user was never there add them with 1 new star
-      if (!targetBotMessage) {
-        starChan.send(`<@${userId}> 1 🌟`);
-      } else {
-        // if they're present: find the message and increase the stars
-        const [user, nbStars, starSymbol] = targetBotMessage.content.split(" ");
+  // need full Message type so must fetch, no cache.
+  const allStarChannelMessages: Map<any, Message> =
+    await starChan.messages.fetch();
 
-        targetBotMessage.edit({
-          content: `${user} ${Number(nbStars) + 1} ${starSymbol}`,
-        });
-      }
-    });
+  const messages = Array.from(allStarChannelMessages.values());
 
-    await response.reply({
-      content: `Your selection was received successfully with interaction ID: ${response.id}`,
-      ephemeral: true,
-    });
+  // for each of the selected people:
+  response.values.forEach((userId) => {
+    // find the bot message in star channel
+    const targetBotMessage = messages.find((message) =>
+      message.content.includes(userId)
+    );
+
+    // if user was never there add them with 1 new star
+    if (!targetBotMessage) {
+      const addedUserMessage = createUserStarMessage(userId, 1);
+
+      starChan.send(addedUserMessage);
+    } else {
+      // if they're present: find the message and increase the stars
+      const [_, nbStars] = targetBotMessage.content.split(" ");
+
+      targetBotMessage.edit({
+        content: createUserStarMessage(userId, Number(nbStars) + 1),
+      });
+    }
+  });
+
+  await response.reply({
+    content: `Your selection was received successfully with interaction ID: ${response.id}`,
+    ephemeral: true,
   });
   return;
 }
