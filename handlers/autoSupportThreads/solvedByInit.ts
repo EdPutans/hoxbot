@@ -38,6 +38,7 @@ function getThreadAuthorId(
 export async function handleSolvedBy(interaction: Interaction) {
   if (!interaction.isChatInputCommand()) return;
   if (!interaction.channel?.isThread()) return;
+
   if (!interaction.channel.parent)
     return await createEphemeral(interaction, "Wrong place my dude");
   if (getIsSolvedThread(interaction.channel))
@@ -76,7 +77,7 @@ export async function handleSolvedBy(interaction: Interaction) {
       const isStudent = getIsStudent(roleIds);
       if (!isStudent) return false;
 
-      // participants in the thread
+      // // participants in the thread
       if (!participatedPeople.includes(user.id)) return false;
 
       // are NOT the original author

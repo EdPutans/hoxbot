@@ -59,7 +59,6 @@ export async function handleSelectHelpedOutStudents(interaction: Interaction) {
         userId,
         (Number(nbStars) + 1).toString(),
       ];
-
       const updatedMsg = messageAsADB.updateItemBy(0, userId, updatedUserRow);
 
       if (updatedMsg) message = updatedMsg;

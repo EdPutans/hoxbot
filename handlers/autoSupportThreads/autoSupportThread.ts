@@ -16,6 +16,7 @@ Cheers! 🎩`;
 
 export const getSupportQuestionAuthorId = (botStarterMessage: string) => {
   const match = getUserIdsFromString(botStarterMessage);
+  console.log({ botStarterMessage, match });
   if (!match?.length) return null;
 
   return match[1];
@@ -26,7 +27,8 @@ export const handleAutoSupportThread = async (message: Message) => {
   if (!getIsSupportThread(message.channel.id)) return;
 
   // don't autothread the staff
-  if (getIsTeacher(message.author.id)) return;
+  // FIXME:
+  // if (getIsTeacher(message.author.id)) return;
 
   // the bot crashes if the message is longer than ~~100~~ 80 chars - so we slice it.
   // UPD: 80, not 100 - handleSolve and handleUnsolve take up some characters and can break this.
