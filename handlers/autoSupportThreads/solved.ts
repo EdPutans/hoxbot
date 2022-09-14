@@ -7,6 +7,7 @@ import {
   getIsSupportThread,
   createEphemeral,
   getIsClassroomThread,
+  getIsSolvedThread,
 } from "../../utils/helpers";
 
 export const handleSolved = async (interaction: Interaction) => {
@@ -22,7 +23,7 @@ export const handleSolved = async (interaction: Interaction) => {
     ? solvedClassroomThreadPrefix
     : solvedSupportThreadPrefix;
 
-  if (interaction.channel.name.startsWith(solvedPrefix))
+  if (getIsSolvedThread(interaction.channel))
     return await createEphemeral(
       interaction,
       `Umm.. the channel is already solved?`
@@ -33,7 +34,7 @@ export const handleSolved = async (interaction: Interaction) => {
       interaction,
       `You're not inside a #support or #classroom thread!`
     );
-  if (interaction.channel.name.startsWith(solvedPrefix))
+  if (getIsSolvedThread(interaction.channel))
     return await createEphemeral(
       interaction,
       'Yo, the channel is already "solved"!'

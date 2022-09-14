@@ -1,67 +1,81 @@
-import {
-  Interaction,
-  Message,
-  Snowflake,
-  ChatInputCommandInteraction,
-} from "discord.js";
-import { starChannelId, starSymbol } from "../../utils/consts";
+import { Interaction, Message, Snowflake } from "discord.js";
+import { starChannelId } from "../../utils/consts";
 import client from "../../utils/discordClient";
+import { stringAsADatabase } from "../../utils/stringAsADatabase";
+import { handleSolved } from "./solved";
 
-function createUserStarMessage(userId: Snowflake, nbStars: number) {
-  return `<@${userId}> ${nbStars} ${starSymbol}`;
-}
+type NBStars = string;
+type UserRow = [Snowflake, NBStars];
 
-export async function handleSelectHelpedOutStudents(
-  response: Interaction,
-  parentInteraction: ChatInputCommandInteraction
-) {
-  if (!response.isSelectMenu()) return;
+export const initialTitle = "Heyo, here's the particiapation stars!!\n";
 
-  parentInteraction.editReply({
-    content: "Thanks for the response!",
-    components: [],
-    embeds: [],
-  });
+export async function handleSelectHelpedOutStudents(interaction: Interaction) {
+  if (!interaction.isSelectMenu()) return;
 
   // need Channel type so must fetch, no cache.
   const starChan = await client.channels.fetch(starChannelId);
-  // const starChan = await client.channels.fetch("1016324894658658357");
-
   if (!starChan) return;
   if (!starChan.isTextBased()) return;
   if (starChan.isDMBased()) return;
 
   // need full Message type so must fetch, no cache.
+  // check for existing star track message. if it exists - use it. Otherwise, create a fresh one.
   const allStarChannelMessages: Map<any, Message> =
     await starChan.messages.fetch();
 
   const messages = Array.from(allStarChannelMessages.values());
 
-  // for each of the selected people:
-  response.values.forEach((userId) => {
-    // find the bot message in star channel
-    const targetBotMessage = messages.find((message) =>
-      message.content.includes(userId)
-    );
+  let targetBotMessage;
 
-    // if user was never there add them with 1 new star
-    if (!targetBotMessage) {
-      const addedUserMessage = createUserStarMessage(userId, 1);
+  if (messages?.length) {
+    targetBotMessage = messages.at(0);
+  }
 
-      starChan.send(addedUserMessage);
+  let message = targetBotMessage ? targetBotMessage.content : initialTitle;
+
+  // help.
+  const messageAsADB = stringAsADatabase<UserRow>(
+    `${message}`,
+    initialTitle,
+    ([name, nbStars]) => `${name} ${nbStars} ⭐ \n`,
+    (string) => {
+      const [name, nbStars] = string.split(" ");
+      return [name, nbStars];
+    }
+  );
+
+  interaction.values.forEach((userId) => {
+    // for all of the selected people...
+    const userDataInMessage = messageAsADB.getItemBy(0, `<@${userId}>`);
+
+    // if they aren't on the list - add them with 1 star
+    if (!userDataInMessage) {
+      message = messageAsADB.addItem([`<@${userId}>`, "1"]);
     } else {
-      // if they're present: find the message and increase the stars
-      const [_, nbStars] = targetBotMessage.content.split(" ");
+      // otherwise, increase their score by 1
+      const [userId, nbStars] = userDataInMessage;
 
-      targetBotMessage.edit({
-        content: createUserStarMessage(userId, Number(nbStars) + 1),
-      });
+      const updatedUserRow: UserRow = [
+        userId,
+        (Number(nbStars) + 1).toString(),
+      ];
+
+      const updatedMsg = messageAsADB.updateItemBy(0, userId, updatedUserRow);
+
+      if (updatedMsg) message = updatedMsg;
     }
   });
 
-  await response.reply({
-    content: `Your selection was received successfully with interaction ID: ${response.id}`,
-    ephemeral: true,
-  });
+  // either send the message
+  if (!targetBotMessage) {
+    await starChan.send({ content: message });
+  } else {
+    // or update
+    await targetBotMessage.edit({
+      content: message,
+    });
+  }
+  // once all is set, mark the thread as solved
+  await handleSolved(interaction);
   return;
 }
