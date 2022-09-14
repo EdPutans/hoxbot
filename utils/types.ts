@@ -1,15 +1,15 @@
 export type UserID = "815288587662000159" | "811540425835020309";
 
-export type ZoomLinks = {
+export type StaffConfig = {
   [K in UserID]: {
-    link: string | undefined;
+    zoomLink: string | undefined;
     name: string;
+    offsetToMatchPreferredPostingTimeToAlbaniaTime: number;
   };
 };
 // slash commands supported by hoxbot:
 export enum HOXCommand {
   solved = "solved",
-
   zoom = "zoom",
   event = "event",
   standup = "standup",

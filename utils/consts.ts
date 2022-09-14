@@ -1,5 +1,6 @@
 import { envVariables } from "./getEnvVariables";
-import { ZoomLinks } from "./types";
+
+import { StaffConfig } from "./types";
 export const solvedSupportThreadPrefix = "💚";
 export const solvedClassroomThreadPrefix = "💜";
 export const starSymbol = "⭐";
@@ -23,13 +24,15 @@ export const supportChannelIds = [
 ];
 
 // Note: if a user is a teacher, it's worth adding them here.
-export const zoomLinks: ZoomLinks = {
+export const staffConfig: StaffConfig = {
   "815288587662000159": {
-    link: envVariables.EdZoom,
     name: "Ed",
+    zoomLink: envVariables.EdZoom,
+    offsetToMatchPreferredPostingTimeToAlbaniaTime: 0,
   },
   "811540425835020309": {
-    link: envVariables.NicoZoom,
     name: "Nico",
+    zoomLink: envVariables.NicoZoom,
+    offsetToMatchPreferredPostingTimeToAlbaniaTime: -1,
   },
 };

@@ -2,7 +2,6 @@ import { Interaction, Message } from "discord.js";
 import { handleAutoSupportThread } from "./handlers/autoSupportThreads/autoSupportThread";
 import { handleEasterEgg, handleNoice } from "./handlers/easterEggs";
 import { handleEvent } from "./handlers/event";
-import { handleClearVoiceChat } from "./handlers/handleClearVoiceChat";
 import { handleSolved } from "./handlers/autoSupportThreads/solved";
 import { handleZoom } from "./handlers/zoom";
 import client from "./utils/discordClient";
@@ -33,7 +32,6 @@ client.on(
     try {
       if (!interaction.isCommand())
         return await createEphemeral(interaction, "its not a command what");
-
       if (!interaction.commandName)
         return await createEphemeral(
           interaction,
@@ -57,8 +55,7 @@ client.on(
           return await handleSolvedBy(interaction);
         case "event":
           return await handleEvent(interaction);
-        case "dangerous__clear_voice_channel":
-          return await handleClearVoiceChat(interaction);
+
         default:
           return await createEphemeral(
             interaction,

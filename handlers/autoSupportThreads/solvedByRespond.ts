@@ -4,20 +4,23 @@ import {
   Snowflake,
   ChatInputCommandInteraction,
 } from "discord.js";
-import { starChannelId, starSymbol } from "../../utils/consts";
+import { starChannelId } from "../../utils/consts";
 import client from "../../utils/discordClient";
+import { stringAsADatabase } from "../../utils/stringAsADatabase";
+import { handleSolved } from "./solved";
 
-function createUserStarMessage(userId: Snowflake, nbStars: number) {
-  return `<@${userId}> ${nbStars} ${starSymbol}`;
-}
+type NBStars = string;
+type UserRow = [Snowflake, NBStars];
+
+export const initialTitle = "Heyo, here's the particiapation stars!!\n";
 
 export async function handleSelectHelpedOutStudents(
-  response: Interaction,
+  interaction: Interaction,
   parentInteraction: ChatInputCommandInteraction
 ) {
-  if (!response.isSelectMenu()) return;
+  if (!interaction.isSelectMenu()) return;
 
-  parentInteraction.editReply({
+  await parentInteraction.editReply({
     content: "Thanks for the response!",
     components: [],
     embeds: [],
@@ -25,7 +28,6 @@ export async function handleSelectHelpedOutStudents(
 
   // need Channel type so must fetch, no cache.
   const starChan = await client.channels.fetch(starChannelId);
-  // const starChan = await client.channels.fetch("1016324894658658357");
 
   if (!starChan) return;
   if (!starChan.isTextBased()) return;
@@ -37,31 +39,50 @@ export async function handleSelectHelpedOutStudents(
 
   const messages = Array.from(allStarChannelMessages.values());
 
-  // for each of the selected people:
-  response.values.forEach((userId) => {
-    // find the bot message in star channel
-    const targetBotMessage = messages.find((message) =>
-      message.content.includes(userId)
-    );
+  let targetBotMessage;
 
-    // if user was never there add them with 1 new star
-    if (!targetBotMessage) {
-      const addedUserMessage = createUserStarMessage(userId, 1);
+  if (messages?.length) {
+    targetBotMessage = messages.at(0);
+  }
 
-      starChan.send(addedUserMessage);
+  let message = targetBotMessage ? targetBotMessage.content : initialTitle;
+
+  const messageAsADB = stringAsADatabase<UserRow>(
+    `${message}`,
+    initialTitle,
+    ([name, nbStars]) => `${name} ${nbStars} ⭐ \n`,
+    (string) => {
+      const [name, nbStars] = string.split(" ");
+      return [name, nbStars];
+    }
+  );
+
+  interaction.values.forEach((userId) => {
+    const userDataInMessage = messageAsADB.getItemBy(0, `<@${userId}>`);
+
+    if (!userDataInMessage) {
+      message = messageAsADB.addItem([`<@${userId}>`, "1"]);
     } else {
-      // if they're present: find the message and increase the stars
-      const [_, nbStars] = targetBotMessage.content.split(" ");
+      const [userId, nbStars] = userDataInMessage;
 
-      targetBotMessage.edit({
-        content: createUserStarMessage(userId, Number(nbStars) + 1),
-      });
+      const updatedUserRow: UserRow = [
+        userId,
+        (Number(nbStars) + 1).toString(),
+      ];
+      const updatedMsg = messageAsADB.updateItemBy(0, userId, updatedUserRow);
+
+      if (updatedMsg) message = updatedMsg;
     }
   });
 
-  await response.reply({
-    content: `Your selection was received successfully with interaction ID: ${response.id}`,
-    ephemeral: true,
-  });
+  if (!targetBotMessage) {
+    await starChan.send({ content: message });
+  } else {
+    await targetBotMessage.edit({
+      content: message,
+    });
+  }
+  //FIXME:
+  await handleSolved(interaction);
   return;
 }

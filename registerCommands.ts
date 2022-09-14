@@ -15,8 +15,6 @@ const commands = [
     .setName(HOXCommand.standup)
     .setDescription("Post a standup message"),
 
-  // still an experimental feature. No API support.
-  // new SlashCommandBuilder().setName(HOXCommand.dangerous__clear_voice_channel).setDescription('Clear voice channel chat'),
   new SlashCommandBuilder()
     .setName(HOXCommand.zoom)
     .addStringOption((option: SlashCommandStringOption) =>
@@ -57,9 +55,7 @@ const commands = [
 
   new SlashCommandBuilder()
     .setName(HOXCommand.beta_fixed_by)
-    .setDescription("Fixed but cooler!!"),
-
-  new SlashCommandBuilder().setName("test").setDescription("Testing a modal"),
+    .setDescription("Give stars to a student who helped fix your issue"),
 ].map((command) => command.toJSON());
 
 const rest = new REST({ version: "10" }).setToken(envVariables.token);

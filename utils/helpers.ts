@@ -2,9 +2,10 @@ import { Interaction, Snowflake } from "discord.js";
 import {
   supportChannelIds,
   classRoomIds,
-  zoomLinks,
+  staffConfig,
   studentRoleIds,
 } from "./consts";
+import { UserID } from "./types";
 
 export const getIsSupportThread = (channelId: string) => {
   const isSupportThread = supportChannelIds.includes(channelId);
@@ -27,14 +28,14 @@ export const createEphemeral = async (
 };
 
 // TODO: transform it to use interaction / message -> user -> roles instead
-export const getIsTeacher = (userId: Snowflake) => {
-  const userIdString = userId;
-  return Object.keys(zoomLinks).includes(userIdString);
+export const getIsTeacher = (userId: string) => {
+  return !!staffConfig[userId as UserID];
 };
 
 export const getIsStudent = (roleIds: string[]) =>
   !!roleIds.find((roleId) => studentRoleIds.includes(roleId));
 
 export function getUserIdsFromString(string: string): RegExpMatchArray | null {
-  return string.match(/<?@?!?(\d{17,19})>?/);
+  const match = string.match(/<?@?!?(\d{17,19})>?/);
+  return match;
 }
