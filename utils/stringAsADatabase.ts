@@ -94,7 +94,6 @@ export function stringAsADatabase<T extends string[]>(
       return includes;
     });
 
-    console.log({ entries, identifier, identifierIndexInRow, indexToUpdate });
     if (indexToUpdate === -1) return null;
     entries[indexToUpdate] = newItem;
 

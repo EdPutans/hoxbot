@@ -16,7 +16,7 @@ Cheers! 🎩`;
 
 export const getSupportQuestionAuthorId = (botStarterMessage: string) => {
   const match = getUserIdsFromString(botStarterMessage);
-  console.log({ botStarterMessage, match });
+
   if (!match?.length) return null;
 
   return match[1];
