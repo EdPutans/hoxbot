@@ -1,7 +1,13 @@
 import { envVariables } from "./getEnvVariables";
+
 import { StaffConfig } from "./types";
 export const solvedSupportThreadPrefix = "💚";
 export const solvedClassroomThreadPrefix = "💜";
+export const starSymbol = "⭐";
+
+export const starChannelId = "1016324894658658357";
+
+export const studentRoleIds = ["955781997857480764", "866609200015867914"];
 
 export const classRoomIds = [
   "866611696293117962", // hoxton => #classroom cohort1

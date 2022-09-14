@@ -1,5 +1,12 @@
-import { Interaction } from "discord.js";
-import { supportChannelIds, classRoomIds, staffConfig } from "./consts";
+import { Interaction, ThreadChannel } from "discord.js";
+import {
+  supportChannelIds,
+  classRoomIds,
+  staffConfig,
+  studentRoleIds,
+  solvedSupportThreadPrefix,
+  solvedClassroomThreadPrefix,
+} from "./consts";
 import { UserID } from "./types";
 
 export const getIsSupportThread = (channelId: string) => {
@@ -27,11 +34,17 @@ export const getIsTeacher = (userId: string) => {
   return !!staffConfig[userId as UserID];
 };
 
-export const getIsStudent = (roleIds: string[]) => {
-  const studentRoleIds = [
-    "955781997857480764", // ed's server - Plebian role
-    "866609200015867914", // Hoxton - student role
-  ];
+export const getIsStudent = (roleIds: string[]) =>
+  !!roleIds.find((roleId) => studentRoleIds.includes(roleId));
 
-  return !!roleIds.find((roleId) => studentRoleIds.includes(`${roleId}`));
-};
+export function getUserIdsFromString(string: string): RegExpMatchArray | null {
+  const match = string.match(/<?@?!?(\d{17,19})>?/);
+  return match;
+}
+
+export function getIsSolvedThread(channel: ThreadChannel) {
+  if (channel.name.startsWith(solvedSupportThreadPrefix)) return true;
+  if (channel.name.startsWith(solvedClassroomThreadPrefix)) return true;
+
+  return false;
+}

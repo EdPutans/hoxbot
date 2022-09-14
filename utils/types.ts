@@ -4,17 +4,16 @@ export type StaffConfig = {
   [K in UserID]: {
     zoomLink: string | undefined;
     name: string;
-
-    // Nico likes to post in alb time. Ed uses UK. This will do for now. Fuck  timezones.
     offsetToMatchPreferredPostingTimeToAlbaniaTime: number;
   };
 };
-
 // slash commands supported by hoxbot:
 export enum HOXCommand {
   solved = "solved",
-  unsolve = "unsolve",
   zoom = "zoom",
   event = "event",
   standup = "standup",
+  dangerous__clear_voice_channel = "dangerous__clear_voice_channel",
+  beta_fixed_by = "beta_fixed_by",
+  test = "test",
 }

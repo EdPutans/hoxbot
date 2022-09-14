@@ -1,17 +1,16 @@
 import { Interaction, Message } from "discord.js";
-import { handleAutoSupportThread } from "./handlers/autoSupportThread";
+import { handleAutoSupportThread } from "./handlers/autoSupportThreads/autoSupportThread";
 import { handleEasterEgg, handleNoice } from "./handlers/easterEggs";
 import { handleEvent } from "./handlers/event";
-import { handleSolved } from "./handlers/solved";
-import { handleUnsolve } from "./handlers/unsolve";
 import { handleZoom } from "./handlers/zoom";
 import client from "./utils/discordClient";
 import { envVariables } from "./utils/getEnvVariables";
 import { createEphemeral } from "./utils/helpers";
 import { HOXCommand } from "./utils/types";
 import express from "express";
-import { handleStandupCreate } from "./handlers/handleStandupCreate";
-import { handleStandupReply } from "./handlers/handleStandupReply";
+import { handleStandupCreate } from "./handlers/standup/handleStandupCreate";
+import { handleStandupReply } from "./handlers/standup/handleStandupReply";
+import { handleSolvedBy } from "./handlers/autoSupportThreads/solvedByInit";
 
 const api = express();
 api.get("/", (req, res) => {
@@ -50,12 +49,10 @@ client.on(
         case "standup":
           return await handleStandupCreate(interaction);
         case "solved":
-          return await handleSolved(interaction);
-        case "unsolve":
-          return await handleUnsolve(interaction);
+        case "beta_fixed_by":
+          return await handleSolvedBy(interaction);
         case "event":
           return await handleEvent(interaction);
-
         default:
           return await createEphemeral(
             interaction,

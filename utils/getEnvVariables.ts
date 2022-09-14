@@ -1,4 +1,4 @@
-require('dotenv').config()
+require("dotenv").config();
 
 export const envVariables = {
   token: process.env.BOT_TOKEN as string,
@@ -7,4 +7,4 @@ export const envVariables = {
   NicoZoom: process.env.NICO_ZOOM as string,
   EdZoom: process.env.ED_ZOOM as string,
   port: process.env.PORT || 80,
-}
+};

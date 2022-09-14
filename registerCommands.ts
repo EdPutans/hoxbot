@@ -14,9 +14,6 @@ const commands = [
   new SlashCommandBuilder()
     .setName(HOXCommand.standup)
     .setDescription("Post a standup message"),
-  new SlashCommandBuilder()
-    .setName(HOXCommand.unsolve)
-    .setDescription("Marked as solved by accident? No worries Im here for ya"),
 
   new SlashCommandBuilder()
     .setName(HOXCommand.zoom)
@@ -54,8 +51,11 @@ const commands = [
         .setDescription("Where is the event happening (Zoom, channel, IRL etc)")
         .setRequired(true)
     )
-
     .setDescription("Create a new event in this channel"),
+
+  new SlashCommandBuilder()
+    .setName(HOXCommand.beta_fixed_by)
+    .setDescription("Give stars to a student who helped fix your issue"),
 ].map((command) => command.toJSON());
 
 const rest = new REST({ version: "10" }).setToken(envVariables.token);

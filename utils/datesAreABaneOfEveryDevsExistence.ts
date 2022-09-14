@@ -34,7 +34,6 @@ export function validDateToEpoch(dateString: DateConstructor["arguments"]) {
 }
 
 type Options = {
-  // timezone: "Albania" | "France" | "UK" | "Lithuania";
   hourOffset: number;
 };
 

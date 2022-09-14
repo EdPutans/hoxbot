@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "yeet": "npx ts-node registerCommands.ts && npx nodemon index.ts",
     "setup": "npx ts-node registerCommands.ts",
     "start": "npx ts-node registerCommands.ts && tsc && npx node build/index.js",
-    "dev": "npx nodemon index.ts --ignore activeStandupThreads.json",
+    "dev": "npx nodemon index.ts",
     "start-ts": "npx ts-node index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
