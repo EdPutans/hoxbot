@@ -1,4 +1,11 @@
-import { Interaction, ThreadChannel } from "discord.js";
+import {
+  Collection,
+  Interaction,
+  Message,
+  Snowflake,
+  ThreadChannel,
+} from "discord.js";
+import { getSupportQuestionAuthorId } from "../handlers/autoSupportThreads/autoSupportThread";
 import {
   supportChannelIds,
   classRoomIds,
@@ -47,4 +54,14 @@ export function getIsSolvedThread(channel: ThreadChannel) {
   if (channel.name.startsWith(solvedClassroomThreadPrefix)) return true;
 
   return false;
+}
+
+export function getThreadAuthorId(
+  messages: Collection<string, Message<true>>
+): Snowflake | null {
+  const botMsgContent = messages.at(messages.size - 2)?.content;
+  if (!botMsgContent) return null;
+
+  const authorId = getSupportQuestionAuthorId(botMsgContent);
+  return authorId;
 }
