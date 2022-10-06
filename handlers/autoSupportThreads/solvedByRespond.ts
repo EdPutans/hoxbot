@@ -1,8 +1,13 @@
-import { Interaction, Message, Snowflake } from "discord.js";
-import { starChannelId } from "../../utils/consts";
+import {
+  Interaction,
+  Message,
+  SelectMenuInteraction,
+  Snowflake,
+} from "discord.js";
+import { nullValue, starChannelId } from "../../utils/consts";
 import client from "../../utils/discordClient";
+import { createEphemeral } from "../../utils/helpers";
 import { stringAsADatabase } from "../../utils/stringAsADatabase";
-import { handleSolved } from "./solved";
 
 type NBStars = string;
 type UserRow = [Snowflake, NBStars];
@@ -10,13 +15,26 @@ type UserRow = [Snowflake, NBStars];
 export const initialTitle = "Heyo, here's the particiapation stars!!\n";
 
 export async function handleSelectHelpedOutStudents(interaction: Interaction) {
-  if (!interaction.isSelectMenu()) return;
+  if (!interaction.isSelectMenu())
+    return await createEphemeral(interaction, "Not a select command what?");
 
   // need Channel type so must fetch, no cache.
   const starChan = await client.channels.fetch(starChannelId);
-  if (!starChan) return;
-  if (!starChan.isTextBased()) return;
-  if (starChan.isDMBased()) return;
+  if (!starChan)
+    return await createEphemeral(
+      interaction,
+      "Something went wrong with handling the /solved command - star channel is broken 1"
+    );
+  if (!starChan.isTextBased())
+    return await createEphemeral(
+      interaction,
+      "Something went wrong with handling the /solved command - star channel is broken 2"
+    );
+  if (starChan.isDMBased())
+    return await createEphemeral(
+      interaction,
+      "Something went wrong with handling the /solved command - star channel is broken 3"
+    );
 
   // need full Message type so must fetch, no cache.
   // check for existing star track message. if it exists - use it. Otherwise, create a fresh one.
@@ -74,7 +92,5 @@ export async function handleSelectHelpedOutStudents(interaction: Interaction) {
       content: message,
     });
   }
-  // once all is set, mark the thread as solved
-  await handleSolved(interaction);
   return;
 }

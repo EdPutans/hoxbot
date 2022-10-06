@@ -1,4 +1,8 @@
+import { Snowflake } from "discord.js";
+
 export type UserID = "815288587662000159" | "811540425835020309";
+
+export type Value = { label: string; value: Snowflake };
 
 export type StaffConfig = {
   [K in UserID]: {

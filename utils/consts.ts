@@ -1,6 +1,9 @@
 import { envVariables } from "./getEnvVariables";
 
-import { StaffConfig } from "./types";
+import { StaffConfig, Value } from "./types";
+
+export const nullValue: Value = { label: "--Nobody--", value: "" };
+
 export const solvedSupportThreadPrefix = "💚";
 export const solvedClassroomThreadPrefix = "💜";
 export const starSymbol = "⭐";

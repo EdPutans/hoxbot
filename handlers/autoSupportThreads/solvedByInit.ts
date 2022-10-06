@@ -2,11 +2,11 @@ import {
   ActionRowBuilder,
   SelectMenuBuilder,
   Interaction,
-  Message,
-  Snowflake,
-  Collection,
   GuildMember,
+  Snowflake,
+  SelectMenuInteraction,
 } from "discord.js";
+import { nullValue } from "../../utils/consts";
 import client from "../../utils/discordClient";
 import {
   createEphemeral,
@@ -14,54 +14,60 @@ import {
   getIsStudent,
   getIsSupportThread,
   getIsTeacher,
+  getThreadAuthorId,
 } from "../../utils/helpers";
-import { getSupportQuestionAuthorId } from "./autoSupportThread";
+import { Value } from "../../utils/types";
+
 import { handleSolved } from "./solved";
 import { handleSelectHelpedOutStudents } from "./solvedByRespond";
 
 export const customSelectId = "SELECT_USER_WHO_HELPED";
 
-function userToSelectValue(std: GuildMember) {
+function getIsNobodySelected(vals: SelectMenuInteraction["values"]): boolean {
+  if (vals.length === 0) return true; // potentially impossible
+  if (vals.length === 1 && vals[0] === nullValue.value) return true;
+
+  return false;
+}
+
+function userToSelectValue(std: GuildMember): Value {
   return { label: std.user.username, value: std.user.id };
 }
 
-function getThreadAuthorId(
-  messages: Collection<string, Message<true>>
-): Snowflake | null {
-  const botMsgContent = messages.at(messages.size - 2)?.content;
-  if (!botMsgContent) return null;
-
-  const authorId = getSupportQuestionAuthorId(botMsgContent);
-  return authorId;
-}
-
 export async function handleSolvedBy(interaction: Interaction) {
-  if (!interaction.isChatInputCommand()) return;
-  if (!interaction.channel?.isThread()) return;
+  if (!interaction.isChatInputCommand())
+    return await createEphemeral(interaction, "Not a chat input command");
+  if (!interaction.channel?.isThread())
+    return await createEphemeral(interaction, "Not in a thread? ");
 
   if (!interaction.channel.parent)
     return await createEphemeral(interaction, "Wrong place my dude");
   if (getIsSolvedThread(interaction.channel))
     return await createEphemeral(interaction, "Already solved");
 
-  if (!getIsSupportThread(interaction.channel.parent.id)) return;
+  if (!getIsSupportThread(interaction.channel.parent.id))
+    return await createEphemeral(interaction, "Not a support thread? ");
 
   const messages = await interaction.channel.messages.fetch();
   const originalThreadAuthorId = getThreadAuthorId(messages);
 
   // only allow triggering by author or staff
-  if (!interaction.member?.user.id) return;
+  if (!interaction.member?.user.id)
+    return await createEphemeral(
+      interaction,
+      "Oy, are you sure you're the original post creator? "
+    );
+
   const triggeredByUserId = interaction.member?.user.id;
   const isTriggeredByNonOriginalCreator =
     triggeredByUserId === originalThreadAuthorId;
   const isTriggeredByTeacher = getIsTeacher(triggeredByUserId);
 
   if (!isTriggeredByNonOriginalCreator && !isTriggeredByTeacher) {
-    await createEphemeral(
+    return await createEphemeral(
       interaction,
       "Only the author or staff member can trigger this command"
     );
-    return;
   }
 
   // get a list of all students in the channel...
@@ -91,23 +97,25 @@ export async function handleSolvedBy(interaction: Interaction) {
     // no need to go further. mark the thread solved if no students helped.
     await createEphemeral(
       interaction,
-      "Looks like other students didn't participate 🤷🏻‍♀️"
+      "Looks like other students didn't participate 🤷🏻‍♀️. Marking solved anyway."
     );
 
-    handleSolved(interaction);
-    return;
+    return handleSolved(interaction);
   }
 
   // NOTE: yes, this logic is required since User !== Member
-  const values = starableStudents.map(userToSelectValue);
+  const starableStudentsAsValues = [
+    nullValue,
+    ...starableStudents.map(userToSelectValue),
+  ];
 
   const row = new ActionRowBuilder<SelectMenuBuilder>().addComponents(
     new SelectMenuBuilder()
       .setCustomId(customSelectId)
       .setPlaceholder("Noone Selected")
-      .addOptions(values)
-      .setMinValues(0)
-      .setMaxValues(values.length)
+      .addOptions(starableStudentsAsValues)
+      .setMinValues(1)
+      .setMaxValues(starableStudentsAsValues.length)
   );
 
   await interaction.reply({
@@ -116,14 +124,29 @@ export async function handleSolvedBy(interaction: Interaction) {
     components: [row],
   });
 
+  await handleSolved(interaction);
+
   // I hate to place it here, but makes it much easier to maintain as it requires some deps from the parent func
-  client.on("interactionCreate", async (response) => {
+  client.on("interactionCreate", async (response: Interaction) => {
+    if (!response.isSelectMenu())
+      return await createEphemeral(interaction, "Not a select command what?");
+
+    const nobodyWasSelected = getIsNobodySelected(response.values);
+
+    let content = nobodyWasSelected
+      ? "Nobody gets a star. Thats fine by me"
+      : `Thanks for the response! *Trying to* add stars to ${Object.values(
+          starableStudentsAsValues
+        ).join(", ")}`;
+
     await interaction.editReply({
-      content: "Thanks for the response!",
+      content,
       components: [],
       embeds: [],
     });
-    await handleSelectHelpedOutStudents(response);
+
+    if (!nobodyWasSelected) await handleSelectHelpedOutStudents(response);
+
     return;
   });
   return;
