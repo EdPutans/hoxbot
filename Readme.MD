@@ -13,9 +13,10 @@ For more details on how to use and build features, check out DiscordJS official 
 - [x] quickly posting a zoom link to a meeting
 - [X] fast creation of a new event 
 - [X] quick create stand up thread, which tracks which students replied in it. (A student is an account with Student permission).
-### WIP:
-- [] award stars to active students
-- [] Custom standup message
+### Beta:
+- [ ] award stars to active students
+WIP:
+- [ ] Custom standup message
 
 ## Installation and setup
 
