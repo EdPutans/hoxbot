@@ -86,11 +86,12 @@ export async function handleSelectHelpedOutStudents(interaction: Interaction) {
   // either send the message
   if (!targetBotMessage) {
     await starChan.send({ content: message });
+    return;
   } else {
     // or update
     await targetBotMessage.edit({
       content: message,
     });
+    return;
   }
-  return;
 }

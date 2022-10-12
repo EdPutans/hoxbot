@@ -3,7 +3,6 @@ import {
   SelectMenuBuilder,
   Interaction,
   GuildMember,
-  Snowflake,
   SelectMenuInteraction,
 } from "discord.js";
 import { nullValue } from "../../utils/consts";
@@ -100,7 +99,8 @@ export async function handleSolvedBy(interaction: Interaction) {
       "Looks like other students didn't participate 🤷🏻‍♀️. Marking solved anyway."
     );
 
-    return handleSolved(interaction);
+    handleSolved(interaction);
+    return;
   }
 
   // NOTE: yes, this logic is required since User !== Member

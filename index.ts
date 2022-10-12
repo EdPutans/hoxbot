@@ -11,6 +11,7 @@ import express from "express";
 import { handleStandupCreate } from "./handlers/standup/handleStandupCreate";
 import { handleStandupReply } from "./handlers/standup/handleStandupReply";
 import { handleSolvedBy } from "./handlers/autoSupportThreads/solvedByInit";
+import { handlePowerButton } from "./handlers/handlePowerButton";
 
 const api = express();
 api.get("/", (req, res) => {
@@ -48,11 +49,17 @@ client.on(
           return await handleZoom(interaction);
         case "standup":
           return await handleStandupCreate(interaction);
+
         case "solved":
         case "beta_fixed_by":
           return await handleSolvedBy(interaction);
         case "event":
           return await handleEvent(interaction);
+        // restar/start/kill switches:
+        case "kill":
+          return await handlePowerButton(interaction, "kill");
+        case "restart":
+          return await handlePowerButton(interaction, "restart");
         default:
           return await createEphemeral(
             interaction,

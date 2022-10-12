@@ -40,6 +40,7 @@ export const handleSolved = async (interaction: Interaction) => {
       'Yo, the channel is already "solved"!'
     );
 
-  await interaction.channel.setName(solvedPrefix + interaction.channel.name);
-  return;
+  return await interaction.channel.setName(
+    solvedPrefix + interaction.channel.name
+  );
 };
