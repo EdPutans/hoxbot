@@ -60,7 +60,13 @@ client.on(
           );
       }
     } catch (e) {
-      console.error("Something died. ", e);
+      if (!interaction.isCommand())
+        return console.error("command -> err -> case 1");
+
+      return console.error(
+        `Something died when ${interaction.user.username} ran /${interaction.commandName}`,
+        e
+      );
     }
   }
 );
@@ -79,7 +85,10 @@ client.on("messageCreate", async (message: Message): Promise<void> => {
     await handleNoice(message);
     return;
   } catch (e) {
-    console.error("Something died. ", e);
+    console.error(
+      `Something died after this message was posted, ${message.author.username}: ${message.content}`,
+      e
+    );
   }
 });
 

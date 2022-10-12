@@ -27,8 +27,7 @@ export const handleAutoSupportThread = async (message: Message) => {
   if (!getIsSupportThread(message.channel.id)) return;
 
   // don't autothread the staff
-  // FIXME:
-  // if (getIsTeacher(message.author.id)) return;
+  if (getIsTeacher(message.author.id)) return;
 
   // the bot crashes if the message is longer than ~~100~~ 80 chars - so we slice it.
   // UPD: 80, not 100 - handleSolve and handleUnsolve take up some characters and can break this.
