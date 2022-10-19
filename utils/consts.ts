@@ -2,7 +2,7 @@ import { envVariables } from "./getEnvVariables";
 
 import { StaffConfig, Value } from "./types";
 
-export const nullValue: Value = { label: "--Nobody--", value: "" };
+export const nullValue: Value = { label: "--Nobody--", value: "nobody" };
 
 export const solvedSupportThreadPrefix = "💚";
 export const solvedClassroomThreadPrefix = "💜";
