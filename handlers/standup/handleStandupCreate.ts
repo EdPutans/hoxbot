@@ -48,6 +48,7 @@ export const handleStandupCreate = async (interaction: Interaction) => {
     }
   );
 
+  console.log(usersToPing);
   const pingPeople: string = usersToPing
     .map((user) => getUnrespondedUserName(user.id) + "\n")
     .join("");
