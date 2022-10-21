@@ -135,9 +135,9 @@ export async function handleSolvedBy(interaction: Interaction) {
 
     let content = nobodyWasSelected
       ? "Nobody gets a star. Thats fine by me"
-      : `Thanks for the response! *Trying to* add stars to ${Object.values(
-          starableStudentsAsValues
-        ).join(", ")}`;
+      : `Thanks for the response! *Trying to* add stars to these "values": ${response.values
+          .map((userId) => (userId === nullValue.value ? "" : `<@${userId}>`))
+          .join(", ")}`;
 
     await interaction.editReply({
       content,
