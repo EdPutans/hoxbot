@@ -2,7 +2,6 @@ import { envVariables } from "./getEnvVariables";
 
 import { StaffConfig, Value } from "./types";
 
-// NOTE: DO NOT SET TO EMPTY STRING
 export const nullValue: Value = { label: "--Nobody--", value: "Nobody" };
 
 export const solvedSupportThreadPrefix = "💚";
