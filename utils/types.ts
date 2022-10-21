@@ -20,4 +20,6 @@ export enum HOXCommand {
   dangerous__clear_voice_channel = "dangerous__clear_voice_channel",
   beta_fixed_by = "beta_fixed_by",
   test = "test",
+  kill = "kill",
+  restart = "restart",
 }
